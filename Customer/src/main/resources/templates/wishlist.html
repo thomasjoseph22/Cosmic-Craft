@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <title>Wishlist</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
+</head>
+<body>
+
+<header th:replace="~{fragments::hometop}" ></header>
+
+<div th:replace="~{fragments::mobiletop}"></div>
+
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a th:href="@{/}" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Wishlist
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div th:if = "${success}" class = "text-center alert alert-success">
+                <p th:text = "${success}"></p>
+            </div>
+            <div th:if="${check}" style="display: flex; flex-direction: column; align-items: center;">
+                <p class="text-center"  th:text="${check}"></p>
+                <a  th:href="@{/products-list}"><button class="btn btn-primary">Continue Shopping</button></a>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center" th:unless="${check}">
+                            <thead>
+                            <tr class="main-heading">
+                                <th scope="col" colspan="2">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Stock Status</th>
+                                <th scope="col">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="wishlist : ${wishlists}">
+                                <td class="image product-thumbnail">
+                                    <img th:src="@{|/imgs/images/${wishlist.product.image[0].getName()}|}" alt="ProductImage">
+                                </td>
+                                <td class="product-des product-name">
+                                    <h5 class="product-name"><a th:href="@{/product-full/{id}(id = ${wishlist.product.id})}" th:text="${wishlist.product.name}"></a></h5>
+                                    <form id="addToCart" th:action="@{/add-to-cart}" method="post">
+                                        <select id="product_categories" name="selectedSizeId" class="form-control w-auto" required>
+<!--                                            <option th:value = "null">-SELECT SIZE-</option>-->
+<!--                                            <option th:each = "size : ${wishlist.product.sizes}"-->
+<!--                                                    th:value = "${size.id}"-->
+<!--                                                    th:text = "${size.name}">-->
+<!--                                            </option>-->
+                                        </select>
+                                        <input type="hidden" name="productId" th:value="${wishlist.product.id}" />
+                                        <button class="btn btn-sm"  id="addToCartButton" type="submit"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                    </form>
+                                </td>
+                                <td class="price" data-title="Price" th>
+                                    <span th:unless="${wishlist.product.salePrice > 0}">₹[(${wishlist.product.costPrice})]</span>
+                                    <span th:if="${wishlist.product.salePrice > 0}">₹[(${wishlist.product.salePrice})]</span>
+                                    <span th:if="${wishlist.product.salePrice > 0}" class="old-price">₹[(${wishlist.product.costPrice})]</span>
+                                </td>
+                                <td class="text-center" data-title="Stock">
+                                    <span class="color3 font-weight-bold" th:text="${wishlist.product.currentQuantity>0 ? 'In Stock' : 'Out of stock'}"></span>
+                                </td>
+                                <td class="action" data-title="Remove">
+                                    <a th:href="@{/delete-wishlist/{id}(id=${wishlist.id})}"><i class="fi-rs-trash"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+
+
+
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+
+
+<div th:replace = "~{fragments::script}"></div>
+</body>
+</html>

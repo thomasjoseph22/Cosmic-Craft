@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="/imgs/images/asw.jpg">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .body {
+            background-image: url(https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/page/campaign/alienware/gaming/x16-aw3423dw-aw420k-aw720m-aw920h-xml-experience-seeker-front-4000x2250.jpg?fmt=jpg&wid=4000&hei=2250);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .login-form {
+            background-color: rgba(0, 0, 0, 0.7); /* Dark and semi-transparent background */
+            width: 450px;
+            height: 300px;
+            margin-left: 300px;
+            padding: 20px;
+            border-radius: 10px; /* Optional: Add border-radius for rounded corners */
+        }
+
+        .login-form h3 {
+            margin-left: 30px;
+            margin-bottom: -10px;
+            padding-top: 20px;
+            font-weight: bold;
+            font-size: larger;
+            color: white; /* Set the text color to white */
+        }
+
+        .form-group {
+            margin-left: 20px;
+        }
+
+        .login_footer {
+            margin-left: 150px;
+        }
+
+        .btn {
+            margin-left: 130px;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body class="body">
+<header th:replace="~{fragments::hometop}" ></header>
+
+<section class="pt-150 pb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 m-auto">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div>
+                            <div class="login-form" style="height: 400px">
+                                <div class="heading_s1">
+                                    <h3 class="mb-30">Login</h3>
+                                </div>
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger">Credentials invalid</div>
+                                </div>
+                                <div th:if="${param.logout}">
+                                    <div class="alert alert-success">You have been logged out.</div>
+                                </div>
+                                <form method="POST" th:action="@{/do-login}">
+                                    <div class="form-group">
+                                        <input type="text" name="username" placeholder="Your Email" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" placeholder="Password" class="form-control">
+                                    </div>
+                                    <div class="login_footer form-group">
+                                        <a th:href="@{/forgot_password}">Forgot password?</a>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-fill-out btn-block hover-up">Log in</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="/js/shop.js?v=3.4"></script>
+</body>
+</html>
