@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+<body>
+
+<div class="card-body">
+    <div class="card-body">
+        <div th:if = "${success}">
+            <p class = "alert alert-success" th:text = "${success}"></p>
+        </div>
+        <div th:if = "${error}">
+            <p class = "alert alert-danger" th:text = "${error}"></p>
+        </div>
+        <form id="addressForm" method="post"  th:object="${addressDto}"  th:action="@{/add-address}">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>Address Line 1<span class="required">*</span></label>
+                    <input id="address_line_1" class="form-control square" name="address_line_1" type="text" th:field="*{address_line_1}">
+                    <div class="error text-danger ms-2"></div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Address Line 2<span class="required">*</span></label>
+                    <input id="address_line_2" class="form-control square" name="address_line_2" type="text" th:field="*{address_line_2}">
+                    <div class="error text-danger ms-2"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>City <span class="required">*</span></label>
+                    <input id="city" class="form-control square" name="city" type="text" th:field="*{city}">
+                    <div class="error text-danger ms-2"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Country<span class="required">*</span></label>
+                    <input id="country" class="form-control square" name="country" type="text" th:field="*{country}">
+                    <div class="error text-danger ms-2"></div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>PinCode<span class="required">*</span></label>
+                    <input id="pincode" class="form-control square" name="pincode" type="text" th:field="*{pincode}">
+                    <div class="error text-danger ms-2"></div>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <p th:if="${size==0}">No Address</p>
+    <table id="dataTable" class="table table-bordered" th:if = "${size > 0}">
+        <thead>
+        <tr>
+            <th scope="col">Address Line 1</th>
+            <th scope="col">Address Line 2</th>
+            <th scope="col">City</th>
+            <th scope="col">Country</th>
+            <th scope="col">PinCode</th>
+            <th scope="col">Update</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "address : ${addressList}">
+            <td th:text = "${address.address_line_1}"></td>
+            <td th:text = "${address.address_line_2}"></td>
+            <td th:text = "${address.city}"></td>
+            <td th:text = "${address.country}"></td>
+            <td th:text = "${address.pincode}"></td>
+            <td><a th:href="@{/update-address/{id}(id= ${address.id})}" class="btn btn-primary">Update</a></td>
+            <td>
+                <a th:if="${address.is_default()} == true" th:href="@{/disable-address/{id}(id = ${address.id})}"
+                   onclick="if (!(confirm('Are you sure you want to Disable this Address?'))) return false">Disable</a>
+                <a th:if="${address.is_default()} == false"  th:href="@{/enable-address/{id}(id = ${address.id})}"
+                   onclick="if (!(confirm('Are you sure you want to Enable this Address?'))) return false">Enable</a>
+                <a th:href="@{/delete-address/{id}(id = ${address.id})}"
+                   onclick="if (!(confirm('Are you sure you want to Delete this Address?'))) return false">Delete</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Handle the case when size is 0 -->
+
+    <script th:src="@{/js/address.js}"></script>
+
+</div>
+
+</body>
+</html>

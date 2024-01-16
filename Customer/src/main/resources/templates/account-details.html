@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<div class="card-body">
+    <div class="card-body">
+        <div class="details-section">
+            <h5 class="formTitle">
+                <i>Personal Information</i>
+            </h5>
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+            <div>
+                <p><strong>First Name:</strong> <span class="displayFirstName" th:text="${customer.firstName}"></span></p>
+                <p><strong>Last Name:</strong> <span class="displayLastName" th:text="${customer.lastName}"></span></p>
+                <p><strong>Mobile Number:</strong> <span class="displayMobileNumber" th:text="${customer.mobileNumber}"></span></p>
+            </div>
+            <button class="btn btn-fill-out editButton">Edit Details</button>
+        </div>
+
+        <div class="edit-form">
+            <form method="post" th:action="@{/update-account}" th:object="${customer}" class="accountForm">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="inputLabel" for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="FirstName" th:field="*{firstName}">
+                        <div class="error text-danger ms-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="inputLabel" for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="LastName" th:field="*{lastName}">
+                        <div class="error text-danger ms-2"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="inputLabel" for="mobileNumber">Mobile Number*</label>
+                        <input type="text" id="mobileNumber" name="mobileNumber" placeholder="MobileNumber" th:field="*{mobileNumber}">
+                        <div class="error text-danger ms-2"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="card-body">
+            <button class="btn btn-fill-out" id="changePasswordBtn">Update Password</button>
+            <div id="passwordDropdown" style="display: none;">
+                <form th:action="@{/change-password}" method="post" name="passwordForm" id="passwordForm">
+                    <h5 class="formTitle">
+                        <i>Change Password</i>
+                    </h5>
+                    <div th:if="${message}" class="text-center alert">
+                        <p th:text="${message}"></p>
+                    </div>
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="password"> Current Password * </label>
+                        <input type="password" id="password" name="oldPassword" required>
+                    </div>
+
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="newpassword">New Password *</label>
+                        <input type="password" id="newpassword" name="newPassword" required>
+                    </div>
+
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" name="repeatNewPassword">
+                    </div>
+
+                    <div class="buttonWrapper">
+                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script th:src="@{/js/account.js}"></script>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+<div th:replace = "~{fragments::script}"></div>
+<script>
+    document.getElementById('changePasswordBtn').addEventListener('click', function () {
+        var dropdown = document.getElementById('passwordDropdown');
+        dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+    });
+
+    document.querySelector('.editButton').addEventListener('click', function () {
+        document.querySelector('.details-section').style.display = 'none';
+        document.querySelector('.edit-form').style.display = 'block';
+    });
+</script>
+
+</body>
+</html>

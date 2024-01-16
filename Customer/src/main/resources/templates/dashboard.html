@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <title th:text="${title}"></title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/images/custLogo.png}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css}" integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+</head>
+<body>
+
+<header  class="header-area header-style-5" style="background: black">
+    <div class="header-top " style="background: black">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-3 col-lg-4">
+                    <div class="header-info">
+                        <ul>
+                            <li style="color: white"><i class="fi-rs-smartphone" style="color: white"></i> <a href="#" style="color: white">Cosmic-Craft</a></li>
+                            <li style="color: white"><i class="fi-rs-marker"></i><a  th:href="@{/contact}"  style="color: white">Better than Better</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-4">
+                    <div class="text-center">
+                        <div id="news-flashs" class="d-inline-block">
+                            <ul>
+                                <li style="color: white">Slay the Beast -Easily with more coupons</li>
+                                <li style="color: white">Offers on different product and category <a th:href="@{/product-list}">Shop now</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                    <div class="header-info header-info-right">
+                        <ul>
+                            <li th:if = "${session.username == null}"><i class="fi-rs-user" style="color: white"></i><a th:href="@{/login}" style="color: white">Log In</a></li>
+                            <li th:unless = "${session.username == null}"><i class="fi-rs-user" style="color: white"></i><a th:href="@{/logout}" style="color: white">Log out</a></li>
+                            <li th:if = "${session.username == null}"><i class="fi-rs-user" style="color: white"></i><a th:href="@{/register}" style="color: white">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-bottom sticky-bar sticky-white-bg" style="background-color: black">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+                <div class="logo logo-width-1">
+                    <a th:href="@{/}"><img th:src="@{/imgs/images/CS1.png}" alt="logo"></a>
+                </div>
+                <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                    <nav>
+                        <ul>
+                            <li><a class="active" style="color: #39cccc" th:href="@{/}">Home </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/About}" style="color: #39cccc">About</a>
+                            </li>
+                            <li><a th:href="@{/products-list}" style="color: #39cccc">Shop</a>
+                            </li>
+                            <li><a th:href="@{/dashboard}" style="color: white">My Account</a>
+                            </li>
+                            <li><a th:href="@{/wallets}" style="color: white">Wallet</a>
+                            </li>
+                            <li>
+                                <a th:href="@{/contact}" style="color: white">Contact</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="header-action-2">
+                    <div class="header-action-icon-2" >
+                        <a th:href="@{/wishlist}" >
+                            <img class="svgInject" alt="WishList"  th:src="@{/imgs/theme/icons/icon-heart.svg}">
+                        </a>
+                    </div>
+                    <div class="header-action-icon-2">
+                        <a class="mini-cart-icon" th:href="@{/cart}">
+                            <img alt="Cart" th:src="@{/imgs/theme/icons/icon-cart.svg}">
+                        </a>
+                    </div>
+                </div>
+                <div class="header-action-icon d-block d-lg-none">
+                    <div class="burger-icon">
+                        <span class="burger-icon-top"></span>
+                        <span class="burger-icon-mid"></span>
+                        <span class="burger-icon-bottom"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</header>
+<div th:replace="~{fragments::mobiletop}"></div>
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a th:href="@{/}" rel="nofollow">Home</a>
+                <span></span> Pages
+                <span></span> Account
+            </div>
+        </div>
+    </div>
+    <section class="pt-25 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 m-auto">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active"  id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"  id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"  id="address-tab" data-bs-toggle="tab"  href="#address" role="tab"  aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"  id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"  th:href="@{/logout}"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="tab-content dashboard-content">
+                                <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Welcome </h5><h5 th:text="${customer.firstName}" class="mb-0"></h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                    <div class="row">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Your Orders</h5>
+                                        </div>
+                                        <div class="orders" >
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div  class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                    <div class="row">
+
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Billing Address</h5>
+                                        </div>
+                                        <div class="address-content" id="billing-address-content">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                    <div th:if="${success}" class="text-center alert alert-success">
+                                        <p th:text="${success}"></p>
+                                    </div>
+                                    <div class="account-details" >
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+
+
+<div th:replace = "~{fragments::script}"></div>
+
+
+<script th:src="@{/js/tab.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js}" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js}" integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        const openTabValue = "[[${openTab}]]" ;
+        const errorMessage = "[[${message}]]";
+
+        if(openTabValue!="") {
+            $('.nav a[href="#' + openTabValue + '"]').tab('show');
+            document.getElementById(openTabValue + "-tab").click();
+        }
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+
+
+        $('#orderTable').DataTable();
+    });
+</script>
+
+
+
+
+</body>
+</html>

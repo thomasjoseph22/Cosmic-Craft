@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Orders</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/imgs/images/cosmic-craft-high-resolution-logo-transparent.png">
+    <!-- Template CSS -->
+    <link href="/admin/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css" integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<div class="screen-overlay"></div>
+<aside th:replace = "~{fragments::sidebar}"></aside>
+
+<main class="main-wrap mt-50">
+
+    <div th:if="${success}" class="text-center alert alert-success">
+        <p th:text="${success}">
+        </p>
+    </div>
+    <div class="table-main table-responsive">
+        <table class="table" id="tableOrder">
+            <thead>
+            <tr>
+                <th class="order-date">Order Date</th>
+                <th>Delivery Date</th>
+                <th>Customer Name</th>
+                <th class="price-pr">Order Status</th>
+                <th class="quantity-box">Total Price</th>
+                <th class="total-pr">Payment Method</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td class="order-date">
+                    <span><b>[(${order.orderDate})]</b></span>
+                </td>
+                <td class="name-pr" >
+                    <a href="#">
+                        [(${order.deliveryDate})]
+                    </a>
+                </td>
+                <td>
+                    <span th:text="${order.customer.firstName} + ' ' +  ${order.customer.lastName}"></span>
+                </td>
+                <td class="price-pr">
+                    <select  th:unless="${order.orderStatus=='Cancelled' or order.orderStatus=='Delivered' or order.orderStatus=='Returned' or order.orderStatus=='Pending'}"  id="order-status" th:data-order-id="${order.id}"  onchange="submitSelection(this.getAttribute('data-order-id'))"  name="orderStatus" class="form-control">
+                        <option th:value = "null">-SELECT-</option>
+                        <option value = "Shipped">Shipped</option>
+                        <option value = "Delivered">Delivered</option>
+                    </select>
+                    <p th:text="${order.orderStatus}"></p>
+                </td>
+                <td class="total-pr">
+                    <p style="color: red">₹ [(${order.totalPrice})]</p>
+                </td>
+                <td class="total-pr" style="color: black">
+                    <span></span>[(${order.paymentMethod})]</span>
+                </td>
+                <td>
+                    <a th:href="@{/order-view/{id}(id = ${order.id})}" class="button-cancel" >View </a>
+                    <a th:if="${order.orderStatus=='Pending'}" th:href="@{/cancel-order/{id}(id = ${order.id})}"
+                       onclick="if (!(confirm('Are you sure you want to Cancel this Order?'))) return false" >Cancel </a>
+                    <a th:if="${order.orderStatus.equals('Pending')}"  th:href="@{/accept-order/{id}(id = ${order.id})}"
+                       onclick="if (!(confirm('Are you sure you want to Accept this Order?'))) return false">Accept</a>
+                </td>
+                </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</main>
+
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js" integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="/admin/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/admin/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/admin/js/vendors/select2.min.js"></script>
+<script src="/admin/js/vendors/perfect-scrollbar.js"></script>
+<script src="/admin/js/vendors/jquery.fullscreen.min.js"></script>
+<script src="/admin/js/vendors/chart.js"></script>
+<!-- Main Script -->
+<script src="/admin/js/main.js" type="text/javascript"></script>
+<script src="/admin/js/custom-chart.js" type="text/javascript"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js" integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#tableOrder').DataTable(
+            {
+                order: [
+                    [
+                        0, 'desc'
+                    ]
+                ]
+            }
+        );
+    });
+
+
+    function submitSelection(orderId){
+        const select = document.getElementById("order-status").value;
+        window.location.href = "/admin/orders?status="+ select + "&orderId=" + orderId;;
+    }
+</script>
+</body>
+</html>

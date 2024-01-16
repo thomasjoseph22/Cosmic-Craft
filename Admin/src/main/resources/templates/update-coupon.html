@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <title>Update Coupons</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admin/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/admin/css/main.css">
+</head>
+<body>
+
+<div class="screen-overlay"></div>
+<aside th:replace = "~{fragments::sidebar}"></aside>
+
+<main class="main-wrap mb-50">
+
+    <div class="container mt-10 p-30">
+
+
+        <h2 class="mt-2">Update Coupon</h2>
+        <form th:action="@{/coupons/update-coupon/{id}(id=${coupon.id})}" th:object="${coupon}"  method="post">
+
+
+            <div class="col-md-4">
+                <label for="CouponCode" class="form-label">Code</label>
+                <input  name="code" th:field="*{code}" class="form-control" id="CouponCode" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="CouponDescription" class="form-label">Description</label>
+                <input name="description" th:field="*{description}" class="form-control" id="CouponDescription" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="CouponOff" class="form-label">Percentage Off</label>
+                <input type="number" th:field="*{offPercentage}" name="offPercentage" class="form-control" id="CouponOff" required>
+            </div>
+
+
+            <div class="col-md-4">
+                <label for="CouponMax" class="form-label">Max Off</label>
+                <input type="number" th:field="*{maxOff}"  name="maxOff" class="form-control" id="CouponMax" required>
+
+            </div>
+
+
+            <div class="col-md-4">
+                <label for="CouponDate" class="form-label">Expiry Date</label>
+                <input type="date" th:field="*{expiryDate}" name="expiryDate" class="form-control" id="CouponDate" required>
+            </div>
+
+
+            <div class="col-md-4">
+                <label for="CouponCount" class="form-label">Count</label>
+                <input type="number" th:field="*{count}" name="count" class="form-control" id="CouponCount" required>
+            </div>
+
+
+            <div class="col-12 mt-25">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
+
+    </div>
+
+
+
+</main>
+
+
+
+
+<script src="/admin/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/admin/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/admin/js/vendors/select2.min.js"></script>
+<script src="/admin/js/vendors/perfect-scrollbar.js"></script>
+<script src="/admin/js/vendors/jquery.fullscreen.min.js"></script>
+<script src="/admin/js/vendors/chart.js"></script>
+<!-- Main Script -->
+<script src="/admin/js/main.js" type="text/javascript"></script>
+<script src="/admin/js/custom-chart.js" type="text/javascript"></script>
+
+</body>
+</html>

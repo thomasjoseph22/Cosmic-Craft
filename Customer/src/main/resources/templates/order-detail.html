@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <title>Order-Detail</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/images/custLogo.png}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
+</head>
+</head>
+<body>
+<header th:replace="~{fragments::hometop}" ></header>
+
+<div th:replace="~{fragments::mobiletop}"></div>
+
+
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div th:if = "${success}" class = "text-center alert alert-success">
+                    <p th:text = "${success}"></p></div>
+                <div class="row">
+                    <div class="float-end">
+                        <a th:href="@{/dashboard}" class="btn btn-primary p-2 ms-md-5">
+                            <i class="material-icons md-plus"></i> Go to Dashboard
+                        </a>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="40%">Product</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="orderDetail : ${order.orderDetails}">
+                                    <td>
+                                        <a class="itemside" href="#">
+                                            <div class="left">
+                                                <img th:src="@{'/imgs/images/' + ${orderDetail.product.image[0].getName()}}" width="40" height="40" class="img-xs" alt="Item">
+                                            </div>
+                                            <div class="info"  >[(${orderDetail.product.name})] <br> Size : [(${orderDetail.size})] </div>
+                                        </a>
+                                    </td>
+                                    <td th:text="${orderDetail.product.costPrice}"></td>
+                                    <td th:text="${orderDetail.quantity}"></td>
+                                    <td class="text-end" th:text="${orderDetail.product.costPrice} * ${orderDetail.quantity}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <article class="float-end">
+                                            <dl class="dlist" th:if="${order.discountPrice != null}">
+                                                <dt>Total Price :</dt>
+                                                <dd th:with="totalPrice=(${order.totalPrice} + ${order.discountPrice})" th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA', 2,'POINT')}"></dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Shipping cost:</dt>
+                                                <dd>Free</dd>
+                                            </dl>
+                                            <dl class="dlist" th:if="${order.discountPrice != null}">
+                                                <dt>Discount</dt>
+                                                <dd  th:text="${order.discountPrice}"></dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Grand total:</dt>
+                                                <dd> <b class="h5">[(${order.totalPrice})]</b> </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt class="text-muted">Status:</dt>
+                                                <dd>
+                                                    <span class="badge rounded-pill alert-success text-success">Payment [(${order.paymentStatus})]</span>
+                                                </dd>
+                                            </dl>
+                                        </article>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive// -->
+                    </div>
+                    <div class="float-start">
+                        <a th:href="@{/downloadInvoice/{orderId}(orderId=${order.id})}" class="btn btn-secondary p-2">
+                            <i class="material-icons md-download"></i> Download Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+<div th:replace = "~{fragments::script}"></div>
+<!-- Template  JS -->
+<script th:src="@{/js/shop.js?v=3.4}"></script>
+</body>
+</html>

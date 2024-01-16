@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <title>[(${productDto.name})]</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
+</head>
+<body>
+<header th:replace="~{fragments::hometop}" ></header>
+
+<div th:replace="~{fragments::mobiletop}"></div>
+
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a th:href="@{/}" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span th:text="${productDto.name}"></span>
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="product-detail accordion-detail">
+                        <div class="row mb-50">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="detail-gallery">
+                                    <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                    <!-- MAIN SLIDES -->
+                                    <div class="product-image-slider">
+                                        <th:block th:each="image : ${productDto.image}">
+                                            <figure class="border-radius-10">
+                                                <img th:src="@{|/imgs/images/${image.getName()}|}" alt="product image">
+                                            </figure>
+                                        </th:block>
+
+                                    </div>
+                                    <!-- THUMBNAILS -->
+                                    <div class="slider-nav-thumbnails pl-15 pr-15">
+                                        <th:block th:each="image : ${productDto.image}">
+                                            <div><img th:src="@{|/imgs/images/${image.getName()}|}" alt="product image"></div>
+                                        </th:block>
+                                    </div>
+                                </div>
+                                <!-- End Gallery -->
+                                <div class="social-icons single-share">
+                                    <ul class="text-grey-5 d-inline-block">
+                                        <li><strong class="mr-10">Share this:</strong></li>
+                                        <li class="social-facebook"><a href="#"><img src="@{/imgs/theme/icons/icon-facebook.svg}" alt=""></a></li>
+                                        <li class="social-twitter"> <a href="#"><img src="@{/imgs/theme/icons/icon-twitter.svg}" alt=""></a></li>
+                                        <li class="social-instagram"><a href="#"><img src="@{/imgs/theme/icons/icon-instagram.svg}" alt=""></a></li>
+                                        <li class="social-linkedin"><a href="#"><img src="@{/imgs/theme/icons/icon-pinterest.svg}" alt=""></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="detail-info">
+                                    <h2 th:text = "${productDto.name}" class="title-detail"></h2>
+                                    <div class="product-detail-rating">
+                                        <div class="pro-details-brand">
+                                            <span> Category: <span th:text = "${productDto.category.name}"></span></span>
+                                        </div>
+                                        <div class="pro-details-brand">
+                                            <span> Brand: <span th:text = "${productDto.brand}"></span></span>
+                                        </div>
+                                        <div class="product-rate-cover text-end">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width:90%">
+                                                </div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix product-price-cover">
+                                        <div class="product-price primary-color float-left">
+                                            <ins style="color: #0dcaf0"><span class="text-brand" th:unless="${productDto.salePrice > 0}" >₹[(${productDto.costPrice})]</span></ins>
+                                            <ins style="color: #0dcaf0"><span class="text-brand" th:if="${productDto.salePrice > 0}" style="color: #0dcaf0">₹[(${productDto.salePrice})]</span></ins>
+                                            <ins style="color: #0dcaf0"><span th:if="${productDto.salePrice > 0}" class="old-price font-md ml-15" style="color: #0dcaf0">₹[(${productDto.costPrice})]</span></ins>
+                                        </div>
+                                    </div>
+                                    <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                    <div class="short-desc mb-30">
+                                        <p th:text="${productDto.shortDescription}"></p>
+                                    </div>
+                                    <div class="product_sort_info font-xs mb-30">
+                                        <ul>
+                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>
+                                            <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
+                                            <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                    <div class="detail-extralink">
+
+                                    </div>
+                                    <ul class="product-meta font-xs color-grey mt-50">
+                                        <li th:if="${productDto.currentQuantity > 0}">Availability: <span class="in-stock text-success ml-5" style="color: #0dcaf0" th:text="${productDto.currentQuantity}"></span></li>
+                                        <li th:unless="${productDto.currentQuantity > 0}">Availability: <span class="out-of-stock text-danger ml-5">Out of Stock</span></li>
+                                    </ul>
+                                    <form th:action="@{/add-to-cart}" method="post" th:id="'form_' + ${productDto.id}" th:data-product-quantity="${productDto.currentQuantity}">
+                                        <input type="hidden" name="productId" th:value="${productDto.id}" />
+                                        <div class="product-action-1 show mt-15">
+                                            <button type="submit" class="btn btn-primary" id="yourButtonId">Add to Cart</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <!-- Detail Info -->
+                            </div>
+                        </div>
+                        <div class="tab-style3">
+                            <ul class="nav nav-tabs text-uppercase">
+                                <li class="nav-item">
+                                    <a  class="nav-link active" id="Description-tab" data-bs-toggle="tab" href="#Description">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab" href="#Additional-info">Additional info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews (3)</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content shop_info_tab entry-main-content">
+                                <div class="tab-pane fade show active" id="Description">
+                                    <div th:text="${productDto.longDescription}" class="">
+
+                                        <ul class="product-more-infor mt-30">
+                                            <li><span>Type Of Packing</span> Bottle</li>
+                                            <li><span>Color</span> Green, Pink, Powder Blue, Purple</li>
+                                            <li><span>Quantity Per Case</span> 100ml</li>
+                                            <li><span>Ethyl Alcohol</span> 70%</li>
+                                            <li><span>Piece In One</span> Carton</li>
+                                        </ul>
+                                        <hr class="wp-block-separator is-style-dots">
+                                        <p>Laconic overheard dear woodchuck wow this outrageously taut beaver hey hello far meadowlark imitatively egregiously hugged that yikes minimally unanimous pouted flirtatiously as beaver beheld above forward
+                                            energetic across this jeepers beneficently cockily less a the raucously that magic upheld far so the this where crud then below after jeez enchanting drunkenly more much wow callously irrespective limpet.</p>
+                                        <h4 class="mt-30">Packaging & Delivery</h4>
+                                        <hr class="wp-block-separator is-style-wide">
+                                        <p>Less lion goodness that euphemistically robin expeditiously bluebird smugly scratched far while thus cackled sheepishly rigid after due one assenting regarding censorious while occasional or this more crane
+                                            went more as this less much amid overhung anathematic because much held one exuberantly sheep goodness so where rat wry well concomitantly.
+                                        </p>
+                                        <p>Scallop or far crud plain remarkably far by thus far iguana lewd precociously and and less rattlesnake contrary caustic wow this near alas and next and pled the yikes articulate about as less cackled dalmatian
+                                            in much less well jeering for the thanks blindly sentimental whimpered less across objectively fanciful grimaced wildly some wow and rose jeepers outgrew lugubrious luridly irrationally attractively
+                                            dachshund.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="Additional-info">
+                                    <table class="font-md">
+                                        <tbody>
+                                        <tr class="stand-up">
+                                            <th>Stand Up</th>
+                                            <td>
+                                                <p>35″L x 24″W x 37-45″H(front to back wheel)</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="folded-wo-wheels">
+                                            <th>Folded (w/o wheels)</th>
+                                            <td>
+                                                <p>32.5″L x 18.5″W x 16.5″H</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="folded-w-wheels">
+                                            <th>Folded (w/ wheels)</th>
+                                            <td>
+                                                <p>32.5″L x 24″W x 18.5″H</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="door-pass-through">
+                                            <th>Door Pass Through</th>
+                                            <td>
+                                                <p>24</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="frame">
+                                            <th>Frame</th>
+                                            <td>
+                                                <p>Aluminum</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="weight-wo-wheels">
+                                            <th>Weight (w/o wheels)</th>
+                                            <td>
+                                                <p>20 LBS</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="weight-capacity">
+                                            <th>Weight Capacity</th>
+                                            <td>
+                                                <p>60 LBS</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="width">
+                                            <th>Width</th>
+                                            <td>
+                                                <p>24″</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="handle-height-ground-to-handle">
+                                            <th>Handle height (ground to handle)</th>
+                                            <td>
+                                                <p>37-45″</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="wheels">
+                                            <th>Wheels</th>
+                                            <td>
+                                                <p>12″ air / wide track slick tread</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="seat-back-height">
+                                            <th>Seat back height</th>
+                                            <td>
+                                                <p>21.5″</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="head-room-inside-canopy">
+                                            <th>Head room (inside canopy)</th>
+                                            <td>
+                                                <p>25″</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="pa_color">
+                                            <th>Color</th>
+                                            <td>
+                                                <p>Black, Blue, Red, White</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="pa_size">
+                                            <th>Size</th>
+                                            <td>
+                                                <p>M, S</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <!-- Reviews Tab -->
+                                <div class="tab-pane fade" id="Reviews">
+                                    <h3 class="section-title style-1 mb-30 mt-30">Reviews (TOTAL REVIEW COUNT)</h3>
+
+                                    <!-- Display Existing Reviews -->
+                                    <div class="comments-area style-2">
+                                        <!-- Existing reviews loop -->
+                                        <div th:unless="${reviews == null}" class="single-comment justify-content-between d-flex" th:each="review : ${reviews}">
+                                            <!-- Existing review details -->
+                                            <!-- ... (existing review display code) ... -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Form for Adding a New Review -->
+                                    <div class="mt-30">
+                                        <!-- Add Review Button -->
+                                        <button id="addReviewButton">Add Review</button>
+
+                                        <!-- Review Form Container -->
+                                        <div id="reviewFormContainer" style="display: none;">
+                                            <form id="reviewForm">
+                                                <!-- Your review form fields go here -->
+                                                <textarea name="comment" placeholder="Enter your review"></textarea>
+                                                <input type="submit" value="Submit Review">
+                                            </form>
+                                        </div>
+
+                                        <!-- Reviews Container -->
+                                        <div id="reviewsContainer">
+                                            <!-- Reviews will be displayed here -->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-60">
+                            <div class="col-12">
+                                <h3 class="section-title style-1 mb-30">Related products</h3>
+                            </div>
+                            <div class="col-12">
+                                <div class="row related-products">
+                                    <div class="col-lg-3 col-md-4 col-12 col-sm-6" th:each="product : ${products}">
+                                        <div class="product-cart-wrap small hover-up" >
+                                            <div class="product-img-action-wrap" >
+                                                <div class="product-img product-img-zoom">
+                                                    <a th:href="@{/product-full/{id}(id = ${product.id})}" tabindex="0">
+                                                        <img class="default-img" th:src="@{|/imgs/images/${product.image[0].getName()}|}" alt="ProductImage">
+                                                        <img class="hover-img" th:src="@{|/imgs/images/${product.image[0].getName()}|}" alt="ProductImage">
+                                                    </a>
+                                                </div>
+                                                <div class="product-action-1">
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/add-wishlist}" th:data-product-id="${product.id}"><i class="fi-rs-heart"></i></a>
+                                                </div>
+                                                <div class="product-badges product-badges-position product-badges-mrg">
+                                                    <span class="hot">Hot</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-content-wrap">
+                                                <h2><a th:href="@{/product-full/{id}(id = ${product.id})}" th:text = "${product.name}" tabindex="0"></a></h2>
+                                                <div class="rating-result" title="90%">
+                                                        <span>
+                                                        </span>
+                                                </div>
+                                                <div class="product-price">
+                                                    <span th:unless="${product.salePrice > 0}">₹[(${product.costPrice})]</span>
+                                                    <span th:if="${product.salePrice > 0}">₹[(${product.salePrice})]</span>
+                                                    <span th:if="${product.salePrice > 0}" class="old-price">₹[(${product.costPrice})]</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        $(".action-btn").click(function (event) {
+            event.preventDefault();
+
+            const productId = $(this).data("product-id");
+
+            console.log(productId);
+            $.ajax({
+                url: "/customer/add-wishlist",
+                type: "POST",
+                data: {productId: productId},
+                success: function (response) {
+                    alert("Added to wishlist successfully");
+                },
+                error: function (xhr, status, error) {
+
+                    if (xhr.status === 409) {
+                        alert("Product already exists in wishlist");
+                    } else if (xhr.status === 401) {
+                        alert("User not logged in , Please Log in")
+                    } else {
+                        alert("Error adding to wishlist. Please try again later.");
+                    }
+                },
+            });
+        });
+    });
+
+    document.getElementById("yourButtonId").addEventListener("click", function () {
+        // Show a simple alert
+        alert("Product added to cart successfully");
+    });
+
+
+    $(document).ready(function () {
+        // Add Review Button Click Event
+        $("#addReviewButton").click(function () {
+            $("#reviewFormContainer").toggle(); // Show/hide the review form
+        });
+
+        // Review Form Submission
+        $("#reviewForm").submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get review data from the form
+            var reviewData = {
+                comment: $("textarea[name='comment']").val(),
+                // Add other review fields if needed
+            };
+
+            // Send the review data to the backend using AJAX
+            $.ajax({
+                type: "POST",
+                url: "/customer/add-review", // Adjust the URL to your backend endpoint
+                contentType: "application/json",
+                data: JSON.stringify(reviewData),
+                success: function (response) {
+                    // Handle the success response (e.g., display the new review)
+                    displayReview(response);
+                },
+                error: function (error) {
+                    // Handle the error
+                    console.error("Error adding review:", error);
+                }
+            });
+        });
+
+        // Function to display a new review
+        function displayReview(review) {
+            // Append the new review to the reviews container
+            $("#reviewsContainer").append("<div>" + review.comment + "</div>");
+
+            // Clear the review form
+            $("#reviewForm")[0].reset();
+
+            // Hide the review form after submission
+            $("#reviewFormContainer").hide();
+        }
+    });
+
+</script>
+
+
+<!-- Other scripts -->
+<div th:replace="~{fragments::script}"></div>
+<script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
+<!-- Template  JS -->
+<script th:src="@{/js/shop.js?v=3.4}"></script>
+</body>
+</html>

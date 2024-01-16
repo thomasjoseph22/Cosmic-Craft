@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admins/imgs/images/cosmic-craft-high-resolution-logo-transparent.png">
+    <!-- Template CSS -->
+    <link href="/admin/css/main.css" rel="stylesheet" type="text/css" />
+
+
+
+</head>
+<body>
+<!-- Sidebar -->
+
+<aside th:fragment="sidebar" class="navbar-aside" id="offcanvas_aside" style="background-color: black">
+    <div class="aside-top">
+        <a th:href="@{/}" class="brand-wrap">
+            <img src="/admin/imgs/images/cosmic-craftone.png" class="logo" alt="Cosmic-Craft">
+        </a>
+        <div>
+            <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted "></i> </button>
+        </div>
+    </div>
+    <nav>
+        <ul class="menu-aside">
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/}"> <i class="icon"></i>
+                    <span class="text text-white">Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/products}"> <i class="icon"></i>
+                    <span class="text text-white">Products</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/categories}"> <i class="icon"></i>
+                    <span class="text text-white">Category</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/orders}"> <i class="icon"></i>
+                    <span class="text text-white">Orders</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/customers}"> <i class="icon"></i>
+                    <span class="text text-white">Customers</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/coupons}"> <i class="icon"></i>
+                    <span class="text text-white">Coupons</span> </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/offers}"> <i class="icon"></i>
+                    <span class="text text-white">Offers</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a class="menu-link" th:href="@{/logout}"> <i class="icon"></i>
+                    <span class="text text-white">Logout</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <br>
+        <br>
+    </nav>
+</aside>
+
+
+<header th:fragment="topbar" class="main-header navbar float-end">
+
+    <div class="col-nav">
+        <button class="btn btn-icon btn-mobile" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+            </li>
+            <li class="dropdown nav-item">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" th:src="@{/imgs/people/avatar2.jpg}" alt="User"></a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    <a class="dropdown-item text-danger" th:href="@{/logout}"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+
+
+
+<div th:fragment="script">
+    <script src="../js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="../js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="../js/vendors/select2.min.js"></script>
+    <script src="../js/vendors/perfect-scrollbar.js"></script>
+    <script src="../js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="../js/vendors/chart.js"></script>
+    <!-- Main Script -->
+    <script src="../js/main.js" type="text/javascript"></script>
+    <script src="../js/custom-chart.js" type="text/javascript"></script>
+</div>
+</body>
+</html>

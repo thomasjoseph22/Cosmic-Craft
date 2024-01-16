@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="/imgs/images/customerlogo.png">
+
+    <title th:text="${title}"></title>
+
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+<style>
+    .login_wrap {
+        background-color: rgba(0, 0, 0, 0.7); /* Dark transparent background */
+        border-radius: 10px;
+    }
+</style>
+
+</head>
+<body style="background-image: url(https://wallpapercave.com/wp/wp3110695.jpg)">
+<header th:replace="~{fragments::topbar}"></header>
+
+
+
+
+<section class="pt-150 pb-150" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 m-auto">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                            <div class="padding_eight_all">
+                                <div class="heading_s1">
+                                    <h3 class="mb-30">Login</h3>
+                                </div>
+
+                                <form method="POST" th:action="@{/do-login}">
+                                    <div th:if="${param.error}">
+                                        <div class="alert alert-danger">Credentials invalid</div>
+                                    </div>
+                                    <div th:if="${param.logout}">
+                                        <div class="alert alert-success">You have been logged out.</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text"  name="username" style="background: white" placeholder="Your Email" class="form-control" >
+                                    </div>
+                                    <div class="form-group">
+                                        <input  type="password" name="password" style="background: white" placeholder="Password" class="form-control">
+                                    </div>
+                                    <div class="login_footer form-group">
+                                        <a class="text-muted" th:href="@{/forgot_password}"><span style="color: #39cccc">Forgot password?</span></a>
+                                    </div>
+
+                                        <button type="submit" style="background: #39cccc;width: 370px">Log in</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<footer th:replace="~{fragments::downbar}">
+
+</footer>
+
+
+<div th:replace = "~{fragments::script}"></div>
+<script src="/js/shop.js?v=3.4"></script>
+
+</body>
+</html>

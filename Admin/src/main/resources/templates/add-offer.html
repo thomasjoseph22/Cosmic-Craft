@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <title>Add Offers</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/admin/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/admin/css/main.css">
+</head>
+<body>
+
+<div class="screen-overlay"></div>
+<aside th:replace = "~{fragments::sidebar}"></aside>
+
+<main class="main-wrap mb-50">
+
+    <div class="container mt-10 p-30">
+
+
+        <h2 class="mt-2">Create Offer</h2>
+        <form th:action="@{/offers/save}" th:object="${offer}"  method="post">
+
+
+            <div class="col-md-4">
+                <label for="OfferName" class="form-label">Offer Name</label>
+                <input  name="name" class="form-control" id="OfferName" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="OfferDescription" class="form-label">Description</label>
+                <input name="description"   required class="form-control" id="OfferDescription">
+            </div>
+
+            <div class="col-md-4">
+                <label for="OfferAmount" class="form-label">Percentage Off</label>
+                <input type="number" name="offPercentage" class="form-control" id="OfferAmount" required>
+            </div>
+
+
+
+            <div class="col-md-4">
+                <label for="OfferType" class="form-label">Type</label>
+                <select onchange="typeSelection()" class= "form-control" id="OfferType" name="offerType">
+                    <option th:value="null" >Select Option</option>
+                    <option  th:value="Product">Product</option>
+                    <option  th:value="Category">Category</option>
+                </select>
+
+            </div>
+
+            <div class="col-md-4" id="proList" hidden>
+                <label for="OfferProducts" class="form-label">Product</label>
+                <select id="OfferProducts" name="offerProductId" class="form-control">
+                    <option selected disabled value="">Select a product</option>
+                    <th:block th:each="product : ${products}">
+                        <option th:value="${product.id}" th:text="${product.name}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div  class="col-md-4" id="catList" hidden>
+                <label for="OfferCategory" class="form-label">Category</label>
+                <select id="OfferCategory" name="offerCategoryId" class="form-control">
+                    <option selected value="">Select a category</option>
+                    <th:block th:each="category : ${categories}">
+                        <option th:value="${category.id}" th:text="${category.name}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+
+            <div class="col-12 mt-25">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
+
+    </div>
+
+
+
+</main>
+
+
+
+
+<script src="/admin/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/admin/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/admin/js/vendors/select2.min.js"></script>
+<script src="/admin/js/vendors/perfect-scrollbar.js"></script>
+<script src="/admin/js/vendors/jquery.fullscreen.min.js"></script>
+<script src="/admin/js/vendors/chart.js"></script>
+<!-- Main Script -->
+<script src="/admin/js/main.js" type="text/javascript"></script>
+<script src="/admin/js/custom-chart.js" type="text/javascript"></script>
+
+<script>
+
+    function typeSelection() {
+        const type = document.getElementById("OfferType");
+        const productSelect = document.getElementById("proList");
+        const categorySelect = document.getElementById("catList");
+
+        if(type.value == "Product"){
+            productSelect.hidden = false;
+            categorySelect.hidden = true;
+        }
+        else{
+            productSelect.hidden = true;
+            categorySelect.hidden = false;
+        }
+
+
+
+    }
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

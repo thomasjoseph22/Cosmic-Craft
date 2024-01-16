@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Checkout</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
+</head>
+<body>
+<header th:replace="~{fragments::hometop}" ></header>
+
+<div th:replace="~{fragments::mobiletop}"></div>
+
+
+
+<div class="page-header breadcrumb-wrap">
+    <div class="container">
+        <div class="breadcrumb">
+            <a th:href="@{/}" rel="nofollow">Home</a>
+            <span></span> Shop
+            <span></span> Checkout
+        </div>
+    </div>
+</div>
+
+
+<main class="main" >
+    <section class="mt-50 mb-50" >
+        <div class="container">
+            <div th:if = "${success}" class = "text-center alert alert-success">
+                <p th:text = "${success}"></p>
+            </div>
+            <div th:if = "${error}" class = "text-center alert alert-danger">
+                <p th:text = "${error}"></p>
+            </div>
+
+
+            <div class="row mt-25">
+                <div class="col-md-6" id="addressCards">
+                    <div class="mb-25 d-md-flex">
+                        <h4 class="mt-md-2 me-md-5 pe-md-5">Choose address for shipping</h4>
+                        <div class="float-end">
+                            <a th:href="@{/dashboard(tab=address)}" class="btn btn-primary p-2 ms-md-5">
+                                <i class="material-icons md-plus"></i> Manage addresses
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card mb-5 mb-lg-0" th:each="address : ${addressList}">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <span class=" float-end text-success" th:if="${address._default==true}">Default</span>
+                            </h5>
+                            <div class="form-check mb-0">
+                                <input class="form-check-input selectCheckBox" type="checkbox" th:value="${address.id}" id="selectCheckBox">
+                                <label class="form-check-label" for="selectCheckBox">
+                                    Select
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>[(${address.customer.firstName})]</strong></p>
+                            <address>[(${address.address_line_1})],[(${address.address_line_2})], [(${address.city})], [(${address.country})], [(${address.pincode})]</address>
+                            <address>Phone: [(${address.customer.mobileNumber})], Email: [(${address.customer.email})]</address>
+                        </div>
+                    </div>
+                    <div class="toggle_info mt-20">
+                        <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Add New Address ?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to Add Address</a></span>
+                    </div>
+                    <div class="panel-collapse collapse login_form" id="loginform">
+                        <div class="panel-body">
+                            <form id="addressForm" method="post"  th:object="${addressDto}"  th:action="@{/add-address-checkout}">
+                                <div class="row mt-50">
+                                    <div class="form-group col-md-6">
+                                        <label>Address Line 1<span class="required">*</span></label>
+                                        <input id="address_line_1" class="form-control square" name="address_line_1" type="text" th:field="*{address_line_1}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Address Line 2<span class="required">*</span></label>
+                                        <input id="address_line_2" class="form-control square" name="address_line_2" type="text" th:field="*{address_line_2}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>City <span class="required">*</span></label>
+                                        <input id="city" class="form-control square" name="city" type="text" th:field="*{city}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Country<span class="required">*</span></label>
+                                        <input id="country" class="form-control square" name="country" type="text" th:field="*{country}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>PinCode<span class="required">*</span></label>
+                                        <input id="pincode" class="form-control square" name="pincode" type="text" th:field="*{pincode}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit"  class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-50">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Your Orders</h4>
+                        </div>
+                        <form  id="hidden-form-placeorder">
+                            <div class="table-responsive order_table text-center">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="cartItem : ${cartItems}">
+                                        <td class="image product-thumbnail">
+                                            <img th:src="@{'/imgs/images/' + ${cartItem.product.image[0].getName()}}" >
+                                        </td>
+                                        <td>
+                                            <h3 class="product-name" th:text="${cartItem.product.name}"></h3>
+                                            <span th:text="'Quantity : ' + ${cartItem.quantity}" class="product-qty"></span>
+                                        </td>
+                                        <td th:text="'₹' + ${cartItem.unitPrice}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Shipping</th>
+                                        <td colspan="2"><em>Free Shipping</em></td>
+                                    </tr>
+                                    <tr th:if="${param.couponCode}">
+                                        <th>Discount</th>
+                                        <td th:text="${param.couponOff} + '%'"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td colspan="2" class="product-subtotal"><span th:text="'₹' + ${shoppingCart.totalPrice}" id="amount" class="font-xl text-brand fw-900"></span></td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                            <div class="payment_method">
+                                <div class="mb-25">
+                                    <h5>Payment</h5>
+                                </div>
+                                <div class="payment_option">
+                                    <div class="custome-radio">
+                                        <input class="form-check-input payment_option" required="" type="radio" name="payment_option" value="COD" id="exampleRadios3" checked >
+                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#cod" aria-controls="cod">Cash on Delivery</label>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input payment_option" required="" type="radio" value="RazorPay" name="payment_option" id="exampleRadios5">
+                                        <label class="form-check-label " for="exampleRadios5" data-bs-toggle="collapse" data-target="#RazorPay" aria-controls="razorpay">Razor Pay</label>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input payment_option" required="" type="radio" value="Wallet" name="payment_option" id="exampleRadios6"  th:disabled="${wallet.balance < shoppingCart.totalPrice ? 'disabled' : null}">
+                                        <label class="form-check-label " for="exampleRadios6" data-bs-toggle="collapse" data-target="#Wallet" aria-controls="wallet">Wallet <span>(Balance:[(${wallet.balance})])</span></label>
+                                        <a th:href="@{/wallets}">Add Balance</a>
+                                    </div>
+
+                                </div>
+                                <input type="hidden" id="addressId" name="shippingAddress" value=""/>
+                                <input type="hidden" id="paymentMethod" name="paymentMethod" value=""/>
+                            </div>
+                        </form>
+                        <button  class="btn btn-fill-out btn-block hover-up" onclick="placeOrder('hidden-form-placeorder')" >Place Order</button>
+
+                    </div>
+                    <div class="toggle_info mt-20">
+                        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+                    </div>
+                    <div class="panel-collapse collapse coupon_form" id="coupon">
+                        <div class="panel-body">
+                            <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                            <form method="post" th:action="@{/check-out/apply-coupon}">
+                                <div class="form-group">
+                                    <input type="text" th:value="${param.couponCode}" placeholder="Enter Coupon Code..." name="couponCode">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn  btn-md" type="submit" name="action" th:value="${param.couponCode == null ? 'apply' : 'remove'}" th:text="${param.couponCode == null ? 'Apply Coupon' : 'Remove Coupon'}"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mt-25" th:each="coupon : ${coupons}" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+                        <p th:text="${coupon.description}"></p>
+                        <p>Code: <strong th:text="${coupon.code}"></strong></p>
+                        <p>Discount % : <strong th:text="${coupon.offPercentage}"></strong></p>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+</main>
+
+
+
+
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+
+<script th:src="@{https://checkout.razorpay.com/v1/checkout.js}"></script>
+
+<div th:replace = "~{fragments::script}"></div>
+
+<script th:src="@{/js/address.js}"></script>
+<script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const couponCode = urlParams.get("couponCode");
+
+    if (couponCode) {
+        const couponForm = document.getElementById("coupon");
+        if (couponForm) {
+            couponForm.classList.add("show");
+        }
+    }
+
+    function placeOrder(formID) {
+        const checkedAddress = $('.selectCheckBox:checked').val();
+        const paymentMethod = $('.payment_option:checked').val();
+
+        if (checkedAddress === undefined) {
+            alert("Please choose a shipping address!!");
+        } else {
+            const addressId = document.getElementById("addressId");
+            const payment_Method = document.getElementById("paymentMethod");
+            addressId.value = checkedAddress;
+            payment_Method.value = paymentMethod;
+
+            // Check if any product quantity exceeds the available quantity
+            const productQuantities = Array.from(document.querySelectorAll('.product-qty'));
+            let exceedLimit = false;
+
+            productQuantities.forEach(productQuantityElement => {
+                const quantity = parseInt(productQuantityElement.textContent.replace('Quantity : ', ''));
+                const availableQuantity = parseInt(productQuantityElement.getAttribute('data-available-quantity'));
+
+                if (quantity > availableQuantity) {
+                    exceedLimit = true;
+                    alert("One or more products exceed the available quantity!");
+                }
+            });
+
+            if (!exceedLimit) {
+                paymentStart(addressId.value, payment_Method.value);
+            }
+        }
+    }
+
+    const paymentStart = (addressId,payment_Method) => {
+        console.log(addressId);
+        console.log(payment_Method);
+
+        $.ajax(
+            {
+                url:'/customer/add-order',
+                data:JSON.stringify({addressId:addressId,
+                    payment_Method:payment_Method}),
+                contentType: 'application/json',
+                type:'POST',
+                dataType:'json',
+                success:function(response){
+                    console.log(response)
+                    if(response.status == "created"){
+                        let options ={
+                            key:'rzp_test_iww5QJkvDDo8Mg',
+                            amount: response.amount,
+                            currency:'INR',
+                            name:'Cosmic-Craft',
+                            description:'Order Payment',
+                            image:'/imgs/images/custLogo.png',
+                            order_id:response.id,
+                            handler:function(response){
+                                console.log(response.razorpay_payment_id);
+                                console.log(response.razorpay_order_id);
+                                console.log(response.razorpay_signature);
+                                verifyPayment(response);
+
+                            },
+                            prefill: {
+                                name:"",
+                                email:"",
+                                contact:""
+                            },
+                            notes:{
+                                address:"Cosmic-Craft"
+                            },
+                            theme:{
+                                color: "#3399cc"
+                            }
+                        };
+                        let rzp = new Razorpay(options);
+
+                        rzp.on('payment.failed', function (response){
+                            console.log(response.error.code);
+                            console.log(response.error.description);
+                            console.log(response.error.source);
+                            console.log(response.error.step);
+                            console.log(response.error.reason);
+                            console.log(response.error.metadata.order_id);
+                            console.log(response.error.metadata.payment_id);
+                        });
+
+                        rzp.open();
+                    }else if(response.status=="Cash"){
+                        location.href='/customer/order-confirmation';
+
+                    }else if(response.status=="Wallet"){
+                        location.href='/customer/order-confirmation';
+
+                    }
+
+                },
+                error:function(error){
+                    console.log(error)
+                    alert("something went wrong")
+                }
+            }
+        )
+
+
+    };
+    function verifyPayment(payment){
+        $.ajax({
+            url:'/customer/verify-payment',
+            method: 'post',
+            data:JSON.stringify(payment),
+            contentType: 'application/json',
+            dataType:'json',
+            success:(response)=>{
+                if(response.status){
+                    alert("congrats!! Payment successful");
+                    location.href='/customer/order-confirmation'
+                } else{
+                    alert("Payment failed!")
+                }
+            }
+        });
+    }
+
+</script>
+<!-- Template  JS -->
+<script th:src="@{/js/shop.js?v=3.4}"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+    <title>Cart</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
+</head>
+<body>
+<header th:replace="~{fragments::hometop}" ></header>
+
+<div th:replace="~{fragments::mobiletop}"></div>
+
+
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div th:if="${check}" style="display: flex; flex-direction: column; align-items: center;">
+                        <p class="text-center"  th:text="${check}"></p>
+                        <a  th:href="@{/products-list}"><button class="btn btn-primary">Continue Shopping</button></a>
+                    </div>
+                    <table class="table shopping-summery text-center clean" th:if="${grandTotal}">
+                        <thead>
+                        <tr class="main-heading">
+                            <th scope="col">click me</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col">Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cartItem :  ${shoppingCart.cartItems}">
+                            <td >
+                                <img class = "my-product-image" style="height: 40px; width: 40px;" alt="ProductImage"
+                                     th:src="@{'/imgs/images/' + ${cartItem.product.image[0].getName()}}" >
+                            </td>
+                            <td class="product-des product-name">
+                                <a th:href="@{/product-full/{id}(id = ${cartItem.product.id})}">
+                                    <h3 class="product-name" th:text="${cartItem.product.name}"></h3>
+                                </a>
+
+                            </td>
+                            <td class="price" data-title="Price">
+                                <p th:unless="${cartItem.product.salePrice > 0}" th:text="${cartItem.product.costPrice}"></p>
+                                <p th:if="${cartItem.product.salePrice > 0}" th:text="${cartItem.product.salePrice}"></p>
+                            </td>
+                            <form th:action="@{/update-cart}" method="post">
+                                <input type = "hidden" name = "id" th:value = "${cartItem.product.id}" >
+                                <input type = "hidden" name = "cart_item_id" th:value = "${cartItem.id}" >
+                                <td class="quantity-box">
+                                    <input type="number" name="quantity" th:value="${cartItem.quantity}" size="4"
+                                           value="1" min="1" step="1"
+                                           class="c-input-text qty text">
+
+                                </td>
+                                <td class="total-pr">
+                                    <p th:text="'₹' + ${cartItem.unitPrice * cartItem.quantity}"></p>
+                                </td>
+                                <td class="action" data-title="Remove">
+                                    <button type="submit" name="action" value="update" title="Update"
+                                            class="btn btn-primary">
+                                        Update
+                                    </button>
+                                    <button type="submit" name="action" value="delete" title="Update"
+                                            class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row my-5" th:if = "${grandTotal}">
+                <div class="col-lg-8 col-sm-12"></div>
+                <div class="col-lg-4 col-sm-12">
+                    <div class="order-box">
+                        <h3>Order summary</h3>
+                        <hr class="my-1">
+                        <div class="d-flex">
+                            <h4>Shipping Cost :  </h4>
+                            <div class="ml-auto font-weight-bold"> Free</div>
+                        </div>
+                        <hr>
+                        <div class="d-flex gr-total">
+                            <h5>Grand Total :  </h5>
+                            <div class="ml-auto h5" th:text="'₹' + ${grandTotal}"></div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-12 d-flex shopping-box"><a  th:href="@{/check-out}" class="ml-auto btn hvr-hover">Checkout</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+
+
+
+
+<footer th:replace="~{fragments::downbar}"></footer>
+<div th:replace = "~{fragments::script}"></div>
+<script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
+<!-- Template  JS -->
+<script th:src="@{/js/shop.js?v=3.4}"></script>
+
+
+</body>
+</html>

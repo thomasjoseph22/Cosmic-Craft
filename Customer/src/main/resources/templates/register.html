@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <title th:text="${title}"></title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/customer/imgs/images/custLogo.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+     <style>
+    body {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        /* Add other styles as needed */
+    }
+
+    .login_wrap {
+        background: rgba(255, 255, 255, 0.4);
+        height: 600px;
+    }
+</style>
+
+</head>
+<body style="background-image: url(https://images.alphacoders.com/112/1128087.jpg);">
+<section class="pt-150 pb-150" style="margin-left: -450px">
+    <div class="container" >
+        <div class="row">
+            <div class="col-lg-10 m-auto">
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-6">
+                        <div class="login_wrap widget-taber-content p-30  border-radius-5" >
+                            <div class="padding_eight_all " style="margin-top: 30px">
+                                <div class="heading_s1">
+                                    <h3 class="mb-30">Create an Account</h3>
+                                </div>
+
+                                <form id="signupForm" th:action = "@{/do-register}" method="POST" th:object = "${customerDto}">
+                                    <div th:if="${param.success}">
+                                        <p class="alert alert-success" th:text="${success}">Account registered Successfully</p>
+                                    </div>
+
+                                    <div th:if="${param.error}">
+                                        <p class="alert alert-danger" th:text="${error}">Invalid</p>
+                                    </div>
+
+                                    <div class="d-md-flex"style="column-gap: 20px" >
+
+                                        <div class="form-group">
+                                            <input type="text" id="firstName"  name="firstName" placeholder="FirstName" th:field="*{firstName}">
+                                            <div class="error text-danger ms-2"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="lastName"  name="lastName" placeholder="LastName" th:field="*{lastName}">
+                                            <div class="error text-danger ms-2"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="email" id="email" name="username" placeholder="Email" th:field="*{email}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="phone"  name="mobileNumber" placeholder="MobileNumber"  th:field="*{mobileNumber}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input  type="password" id="password" name="password" placeholder="Password"  th:field="*{password}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input  type="password" id="rePassword" name="confirmPassword" placeholder="Confirm password"  th:field ="*{confirmPassword}">
+                                        <div class="error text-danger ms-2"></div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-fill-out btn-block hover-up " style="background-color: #39cccc;margin-left: 120px">Submit &amp; Register</button>
+                                    </div>
+                                </form>
+                                <div class="text-muted text-center"><p style="color: black;display: inline">Already have an account?</p> <a th:href="@{/login}" style="color: #39cccc">Log in now</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!--<footer th:replace="~{fragments::downbar}"></footer>-->
+
+
+
+<script src="/js/validation.js"></script>
+<script src="/js/vendor/modernizr-3.6.0.min.js"></script>
+<script src="/js/vendor/jquery-3.6.0.min.js"></script>
+<script src="/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="/js/plugins/slick.js"></script>
+<script src="/js/plugins/jquery.syotimer.min.js"></script>
+<script src="/js/plugins/wow.js"></script>
+<script src="/js/plugins/jquery-ui.js"></script>
+<script src="/js/plugins/perfect-scrollbar.js"></script>
+<script src="/js/plugins/magnific-popup.js"></script>
+<script src="/js/plugins/select2.min.js"></script>
+<script src="/js/plugins/waypoints.js"></script>
+<script src="/js/plugins/counterup.js"></script>
+<script src="/js/plugins/jquery.countdown.min.js"></script>
+<script src="/js/plugins/images-loaded.js"></script>
+<script src="/js/plugins/isotope.js"></script>
+<script src="/js/plugins/scrollup.js"></script>
+<script src="/js/plugins/jquery.vticker-min.js"></script>
+<script src="/js/plugins/jquery.theia.sticky.js"></script>
+<!-- Template  JS -->
+<script src="/js/main.js?v=3.4"></script>
+
+<!-- Add this script block before the closing </body> tag -->
+<!-- Add this script block before the closing </body> tag -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the form and mobile number input field
+        var signupForm = document.getElementById('signupForm');
+        var mobileNumberInput = document.getElementById('phone');
+
+        // Add a submit event listener to the form
+        signupForm.addEventListener('submit', function (event) {
+            // Get the entered value
+            var inputValue = mobileNumberInput.value;
+
+            // Get the error element for the mobile number
+            var mobileNumberError = mobileNumberInput.nextElementSibling;
+
+            // Check if the mobile number is empty
+            if (inputValue.trim() === '') {
+                // Display an error message
+                mobileNumberError.textContent = 'Mobile number cannot be empty';
+                // Prevent the form submission
+                event.preventDefault();
+            } else {
+                // Define a regular expression pattern for valid mobile numbers
+                var mobileNumberPattern = /^\d{10}$/;
+
+                // Check if the entered value matches the pattern
+                if (!mobileNumberPattern.test(inputValue)) {
+                    // Display an error message
+                    mobileNumberError.textContent = 'Invalid mobile number format';
+                    // Prevent the form submission
+                    event.preventDefault();
+                } else {
+                    // Clear the error message if the format is valid
+                    mobileNumberError.textContent = '';
+                }
+            }
+
+            // Check if any of the form fields are empty
+            if (!document.getElementById('firstName').value.trim() || !document.getElementById('lastName').value.trim() ||
+                !document.getElementById('email').value.trim() || !inputValue.trim() ||
+                !document.getElementById('password').value.trim() || !document.getElementById('rePassword').value.trim()) {
+                // Display a "Fill the form" message
+                document.querySelector('.error.text-danger.ms-2').textContent = 'Fill the form Correctly !';
+                // Prevent the form submission
+                event.preventDefault();
+            } else {
+                // Clear the "Fill the form" message if all fields are filled
+                document.querySelector('.error.text-danger.ms-2').textContent = '';
+            }
+        });
+    });
+</script>
+
+
+
+
+<!--<div th:replace = "~{fragments::script}"></div>-->
+</body>
+</html>
