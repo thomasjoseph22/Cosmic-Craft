@@ -10,7 +10,7 @@
 
 - 💬 Ask me about **Java Springboot**
 
-- 📫 How to reach me **thomasjoseph@gmail.com**
+- 📫 How to reach me **thomasjoseph1243@gmail.com**
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
