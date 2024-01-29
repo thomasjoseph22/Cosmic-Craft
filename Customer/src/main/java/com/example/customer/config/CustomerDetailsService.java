@@ -19,7 +19,6 @@ public class CustomerDetailsService implements UserDetailsService {
 
     private CustomerRepository customerRepository;
 
-
     public CustomerDetailsService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -27,7 +26,6 @@ public class CustomerDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByEmail(email);
-
 
         if(customer !=null) {
             if (customer.is_activated()) {
@@ -43,7 +41,6 @@ public class CustomerDetailsService implements UserDetailsService {
                         customer.getLastName(),
                         customer.getMobileNumber(),
                         customer.is_activated());
-
 
             } else {
 

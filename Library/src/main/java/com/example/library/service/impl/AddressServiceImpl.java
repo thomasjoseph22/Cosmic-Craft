@@ -10,11 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-
     private CustomerService customerService;
     private AddressRepository addressRepository;
-
-
     public AddressServiceImpl(CustomerService customerService, AddressRepository addressRepository) {
         this.customerService = customerService;
         this.addressRepository = addressRepository;

@@ -23,9 +23,7 @@ import java.io.UnsupportedEncodingException;
 
 @Controller
 public class ForgotPasswordController {
-
     private static final Logger logger = LoggerFactory.getLogger(ForgotPasswordController.class);
-
 
     @Autowired
     private CustomerService customerService;
@@ -38,8 +36,6 @@ public class ForgotPasswordController {
         model.addAttribute("pagetitle","Forgot password");
         return "forgot_password";
     }
-
-
     @PostMapping("/forgot_password")
     public String processForgotpasswordform(HttpServletRequest request,Model model)  {
         String email = request.getParameter("email");
@@ -114,6 +110,4 @@ public class ForgotPasswordController {
 
         return "message";
     }
-
-
 }

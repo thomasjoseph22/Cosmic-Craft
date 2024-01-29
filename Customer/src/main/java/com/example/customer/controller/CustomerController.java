@@ -9,6 +9,8 @@ import com.example.library.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +29,14 @@ public class CustomerController {
 
     private PasswordEncoder passwordEncoder;
 
+    private final ModelMapper modelMapper;
+
     public CustomerController(CustomerService customerService,AddressService addressService,
-                              PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder,ModelMapper modelMapper) {
         this.passwordEncoder=passwordEncoder;
         this.addressService=addressService;
         this.customerService = customerService;
+        this.modelMapper=modelMapper;
     }
 
     @GetMapping("/dashboard")
@@ -53,9 +58,6 @@ public class CustomerController {
             return "dashboard";
         }
     }
-
-
-
 
     @GetMapping("/address")
     public String getAddress(Principal principal,

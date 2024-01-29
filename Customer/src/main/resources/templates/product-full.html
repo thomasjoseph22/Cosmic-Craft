@@ -10,19 +10,13 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
-    <!-- Template CSS -->
     <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
 </head>
 <body>
 <header th:replace="~{fragments::hometop}" ></header>
-
 <div th:replace="~{fragments::mobiletop}"></div>
-
-
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -49,16 +43,13 @@
                                                 <img th:src="@{|/imgs/images/${image.getName()}|}" alt="product image">
                                             </figure>
                                         </th:block>
-
                                     </div>
-                                    <!-- THUMBNAILS -->
                                     <div class="slider-nav-thumbnails pl-15 pr-15">
                                         <th:block th:each="image : ${productDto.image}">
                                             <div><img th:src="@{|/imgs/images/${image.getName()}|}" alt="product image"></div>
                                         </th:block>
                                     </div>
                                 </div>
-                                <!-- End Gallery -->
                                 <div class="social-icons single-share">
                                     <ul class="text-grey-5 d-inline-block">
                                         <li><strong class="mr-10">Share this:</strong></li>
@@ -120,9 +111,7 @@
                                             <button type="submit" class="btn btn-primary" id="yourButtonId">Add to Cart</button>
                                         </div>
                                     </form>
-
                                 </div>
-                                <!-- Detail Info -->
                             </div>
                         </div>
                         <div class="tab-style3">
@@ -150,7 +139,7 @@
                                         </ul>
                                         <hr class="wp-block-separator is-style-dots">
                                         <p>Laconic overheard dear woodchuck wow this outrageously taut beaver hey hello far meadowlark imitatively egregiously hugged that yikes minimally unanimous pouted flirtatiously as beaver beheld above forward
-                                            energetic across this jeepers beneficently cockily less a the raucously that magic upheld far so the this where crud then below after jeez enchanting drunkenly more much wow callously irrespective limpet.</p>
+                                            energetic across this jeepers beneficently cockily less than raucously that magic upheld far so that this where crud then below after jeez enchanting drunkenly more much wow callously irrespective limpet.</p>
                                         <h4 class="mt-30">Packaging & Delivery</h4>
                                         <hr class="wp-block-separator is-style-wide">
                                         <p>Less lion goodness that euphemistically robin expeditiously bluebird smugly scratched far while thus cackled sheepishly rigid after due one assenting regarding censorious while occasional or this more crane
@@ -252,43 +241,37 @@
                                         </tbody>
                                     </table>
                                 </div>
-
-
-                                <!-- Reviews Tab -->
                                 <div class="tab-pane fade" id="Reviews">
-                                    <h3 class="section-title style-1 mb-30 mt-30">Reviews (TOTAL REVIEW COUNT)</h3>
+                                    <h4 class="mb-30">Review</h4>
+                                    <div class="comment-form">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12">
 
-                                    <!-- Display Existing Reviews -->
-                                    <div class="comments-area style-2">
-                                        <!-- Existing reviews loop -->
-                                        <div th:unless="${reviews == null}" class="single-comment justify-content-between d-flex" th:each="review : ${reviews}">
-                                            <!-- Existing review details -->
-                                            <!-- ... (existing review display code) ... -->
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- Form for Adding a New Review -->
-                                    <div class="mt-30">
-                                        <!-- Add Review Button -->
-                                        <button id="addReviewButton">Add Review</button>
-
-                                        <!-- Review Form Container -->
-                                        <div id="reviewFormContainer" style="display: none;">
-                                            <form id="reviewForm">
-                                                <!-- Your review form fields go here -->
-                                                <textarea name="comment" placeholder="Enter your review"></textarea>
-                                                <input type="submit" value="Submit Review">
-                                            </form>
-                                        </div>
-
-                                        <!-- Reviews Container -->
-                                        <div id="reviewsContainer">
-                                            <!-- Reviews will be displayed here -->
+                                    <div class="comment-list">
+                                        <div class="single-comment justify-content-between d-flex" th:each="review:${reviews}">
+                                            <div class="user justify-content-between d-flex" >
+                                                <div class="thumb text-center col-md-4">
+                                                    <h6><a href="#" th:text="${review.customer.name}"></a></h6>
+                                                </div>
+                                                <div class="desc col-md-8">
+                                                    <p th:text="${review.comment}">.</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <p class="font-xs mr-30" >
+                                                                <small th:text="${review.reviewDate}">
+                                                                </small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-
+                            </div>
                                 <div class="row mt-60">
                             <div class="col-12">
                                 <h3 class="section-title style-1 mb-30">Related products</h3>
@@ -337,20 +320,13 @@
         </div>
     </section>
 </main>
-
-
 <footer th:replace="~{fragments::downbar}"></footer>
-
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-
-
     $(document).ready(function () {
         $(".action-btn").click(function (event) {
             event.preventDefault();
-
             const productId = $(this).data("product-id");
-
             console.log(productId);
             $.ajax({
                 url: "/customer/add-wishlist",
@@ -382,56 +358,38 @@
     $(document).ready(function () {
         // Add Review Button Click Event
         $("#addReviewButton").click(function () {
-            $("#reviewFormContainer").toggle(); // Show/hide the review form
+            $("#reviewFormContainer").toggle();
         });
 
         // Review Form Submission
         $("#reviewForm").submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Get review data from the form
+            event.preventDefault();
             var reviewData = {
                 comment: $("textarea[name='comment']").val(),
-                // Add other review fields if needed
             };
-
-            // Send the review data to the backend using AJAX
             $.ajax({
                 type: "POST",
-                url: "/customer/add-review", // Adjust the URL to your backend endpoint
+                url: "/customer/add-review",
                 contentType: "application/json",
                 data: JSON.stringify(reviewData),
                 success: function (response) {
-                    // Handle the success response (e.g., display the new review)
                     displayReview(response);
                 },
                 error: function (error) {
-                    // Handle the error
+
                     console.error("Error adding review:", error);
                 }
             });
         });
-
-        // Function to display a new review
         function displayReview(review) {
-            // Append the new review to the reviews container
             $("#reviewsContainer").append("<div>" + review.comment + "</div>");
-
-            // Clear the review form
             $("#reviewForm")[0].reset();
-
-            // Hide the review form after submission
             $("#reviewFormContainer").hide();
         }
     });
-
 </script>
-
-
-<!-- Other scripts -->
 <div th:replace="~{fragments::script}"></div>
 <script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
-<!-- Template  JS -->
 <script th:src="@{/js/shop.js?v=3.4}"></script>
 </body>
 </html>

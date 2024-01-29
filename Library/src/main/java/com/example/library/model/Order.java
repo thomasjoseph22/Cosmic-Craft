@@ -29,22 +29,15 @@ public class Order {
     private int quantity;
     private String paymentMethod;
     private boolean isAccept;
-
     private String paymentStatus;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="address_id",referencedColumnName = "address_id")
     private Address shippingAddress;
-
-
     @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
-
-
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL )
     private List<OrderDetail> orderDetails;
-
     @Override
     public String toString() {
         return "Order{" +

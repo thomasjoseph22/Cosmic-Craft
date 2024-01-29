@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment::head}">
+    <style>
+        .star-rating {
+            line-height:32px;
+            font-size:1.25em;
+        }
+        .star-rating .fa-star{color: yellow;}
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment::nav-head}"></div>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a th:href="@{/}" rel="nofollow">Home</a>
+                <span></span> Order
+                <span></span> review
+            </div>
+        </div>
+    </div>
+
+    <div class="comments-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Product Discription</th>
+                                    <th>Unit Prise</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td >
+                                        <img th:if="${not #lists.isEmpty(product.imagesUrl)}"
+                                             th:src="@{'/productImages/' + ${product.imagesUrl[0]}}" width="60" height="60" class="img-xs" alt="Item"> <br>
+                                        <span th:text="${product.name}"></span>
+                                    </td>
+                                    <td th:text="${product.description}"></td>
+                                    <td th:text="${product.salePrice}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h4 class="mb-30">Review</h4>
+                    <div class="comment-form">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <form class="form-contact comment_form" th:action="@{/addReview}" th:object="${reviewDto}" id="commentForm" method="post">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="input-group mb-3">
+                                                    <input type="hidden" th:value="${product.id}" name="productId">
+                                                    <input type="text" class="form-control" th:field="*{comment}" placeholder="write review" name="comment" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn " type="submit">Submit</button>
+                                                        <a class="btn btn-primary" th:href="@{/order?pageNo=0}"> Order Details</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="star-rating">
+                                    <span class="fa fa-star-o" data-rating="1"></span>
+                                    <span class="fa fa-star-o" data-rating="2"></span>
+                                    <span class="fa fa-star-o" data-rating="3"></span>
+                                    <span class="fa fa-star-o" data-rating="4"></span>
+                                    <span class="fa fa-star-o" data-rating="5"></span>
+                                    <input type="hidden" name="whatever1" class="rating-value" value="2.56">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-list">
+                        <div class="single-comment justify-content-between d-flex" th:each="review:${review}">
+                            <div class="user justify-content-between d-flex" >
+                                <div class="thumb text-center col-md-4">
+                                    <h6><a href="#" th:text="${review.customer.name}"></a></h6>
+                                </div>
+                                <div class="desc col-md-8">
+                                    <p th:text="${review.comment}">.</p>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <p class="font-xs mr-30" >
+                                                <small th:text="${review.reviewDate}">
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragment::footer}"></div>
+<div th:replace="~{fragment::scipt}"></div>
+<script>
+    var $star_rating = $('.star-rating .fa');
+    var SetRatingStar = function() {
+        return $star_rating.each(function() {
+            if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                return $(this).removeClass('fa-star-o').addClass('fa-star');
+            } else {
+                return $(this).removeClass('fa-star').addClass('fa-star-o');
+            }
+        });
+    };
+    $star_rating.on('click', function() {
+        $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+        return SetRatingStar();
+    });
+    SetRatingStar();
+    $(document).ready(function() {
+
+    });
+</script>
+</body>
+</html>

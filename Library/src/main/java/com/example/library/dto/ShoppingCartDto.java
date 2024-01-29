@@ -12,12 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class ShoppingCartDto {
     private Long id;
-
     private double totalPrice;
-
     private int totalItems;
-
     private Customer customer;
-
     private Set<CartItemDto> cartItemDto;
 }

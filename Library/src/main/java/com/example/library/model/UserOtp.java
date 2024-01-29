@@ -16,11 +16,9 @@ public class UserOtp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String email;
     private String oneTimePassword;
     private Date otpRequestedTime;
-
     private Date createdAt;
     private Date updateOn;
 }

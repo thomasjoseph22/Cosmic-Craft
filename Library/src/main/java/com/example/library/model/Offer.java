@@ -15,15 +15,10 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "offer_id")
     private Long id;
-
     private String name;
-
     private String description;
-
     private int offPercentage;
-
     private String offerType;
-
     @Column(nullable = true)
     private Long offerProductId;
     @Column(nullable = true)
@@ -32,6 +27,5 @@ public class Offer {
     private Long offerCategoryId;
     @Column(nullable = true)
     private String applicableForCategoryName;
-
     private boolean enabled;
 }

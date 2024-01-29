@@ -24,7 +24,6 @@ public class EmailController {
     private OtpService otpService;
     private EmailService emailService;
     private UserOtpService userOTPService;
-
     private CustomerService usersSevice;
     private PasswordEncoder passwordEncoder;
 
@@ -156,7 +155,5 @@ public class EmailController {
         } else {
             return "redirect:/otpvalidation?error";
         }
-
-
     }
 }

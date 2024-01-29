@@ -18,10 +18,7 @@
 </head>
 <body>
 <header th:replace="~{fragments::hometop}" ></header>
-
 <div th:replace="~{fragments::mobiletop}"></div>
-
-
 <div class="card-body">
     <div th:if = "${success}">
         <p class = "alert alert-success" th:text = "${success}"></p>
@@ -62,16 +59,7 @@
         </div>
     </form>
 </div>
-
-
-
-
-
-
 <footer th:replace="~{fragments::downbar}"></footer>
-
-
-
 <div th:replace = "~{fragments::script}"></div>
 <script th:src="@{/js/address.js}"></script>
 <script th:src="@{/js/shop.js?v=3.4}"></script>

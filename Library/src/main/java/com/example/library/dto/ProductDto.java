@@ -20,8 +20,6 @@ public class ProductDto {
     private int currentQuantity;
     private double costPrice;
     private double salePrice;
-
-
     private List<Image> image;
     private Category category;
     private boolean activated;

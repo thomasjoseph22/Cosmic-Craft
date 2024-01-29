@@ -20,28 +20,17 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
     private Long id;
-
     private String code;
-
     private String description;
-
     private int count;
-
     private int offPercentage;
-
     private int maxOff;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
-
-
     private boolean enabled;
-
     public boolean isExpired(){
         return (this.count == 0 || this.expiryDate.isBefore(LocalDate.now()));
     }
-
-
     @Override
     public String toString() {
         return "Coupon{" +

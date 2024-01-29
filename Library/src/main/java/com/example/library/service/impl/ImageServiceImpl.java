@@ -10,14 +10,12 @@ import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-
     @Autowired
     private ImageRepository imageRepository;
     @Override
     public List<Image> findProductImages(long id) {
         return imageRepository.findImageBy(id);
     }
-
     @Override
     public List<Image> findAll() {
         return imageRepository.findAll();

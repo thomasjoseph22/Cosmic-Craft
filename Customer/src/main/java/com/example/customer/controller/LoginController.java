@@ -18,8 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class LoginController {
 
-
-
     private CustomerService customerService;
 
     private CustomerRepository customerRepository;
@@ -41,12 +39,6 @@ public class LoginController {
         }
         return "login";
     }
-
-
-
-
-
-
     @GetMapping("/register")
     public String getRegisterForm(Model model){
 
@@ -83,12 +75,4 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("success", "Congrat! Your Account has been created successfully");
         return "redirect:/login";
     }
-
-
-
-
-
-
-
-
 }

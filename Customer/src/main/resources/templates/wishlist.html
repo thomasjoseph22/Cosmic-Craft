@@ -10,18 +10,12 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
-    <!-- Template CSS -->
     <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
 </head>
 <body>
-
 <header th:replace="~{fragments::hometop}" ></header>
-
 <div th:replace="~{fragments::mobiletop}"></div>
-
-
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -87,17 +81,7 @@
         </div>
     </section>
 </main>
-
-
-
-
-
-
-
-
 <footer th:replace="~{fragments::downbar}"></footer>
-
-
 <div th:replace = "~{fragments::script}"></div>
 </body>
 </html>

@@ -12,11 +12,9 @@ import java.util.List;
 @Service
 public class CouponServiceImpl implements CouponService {
     private CouponRepository couponRepository;
-
     public CouponServiceImpl(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
     }
-
     @Override
     public Coupon save(CouponDto couponDto) {
         Coupon coupon=new Coupon();
@@ -142,12 +140,8 @@ public class CouponServiceImpl implements CouponService {
             couponDtoList.add(couponDto);
 
         }
-
-
         return couponDtoList;
     }
-
-
     @Override
     public boolean existsCouponByName(String name) {
         return couponRepository.existsByCode(name);

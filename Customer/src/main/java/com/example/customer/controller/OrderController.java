@@ -19,11 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-
 @Controller
 public class OrderController {
-
     private CustomerService customerService;
     private OrderService orderService;
     private ShoppingCartService shoppingCartService;
@@ -91,15 +88,7 @@ public class OrderController {
             attributes.addFlashAttribute("error", "Coupon Code invalid");
             return "redirect:/check-out";
         }
-
     }
-
-
-
-
-
-
-
     @RequestMapping(value = "/check-out/apply-coupon", method = RequestMethod.POST, params = "action=remove")
     public String removeCoupon(Principal principal,RedirectAttributes attributes,
                                HttpSession session){
@@ -110,8 +99,6 @@ public class OrderController {
 
         return "redirect:/check-out";
     }
-
-
     @RequestMapping(value = "/add-order",method = RequestMethod.POST)
     @ResponseBody
     public String createOrder(@RequestBody Map<String,Object> data, Principal principal, HttpSession session, Model model) throws RazorpayException {
@@ -163,10 +150,7 @@ public class OrderController {
             com.razorpay.Order orderRazorPay = razorpayClient.orders.create(options);
             return orderRazorPay.toString();
         }
-
-
     }
-
     @RequestMapping(value = "/verify-payment",method = RequestMethod.POST)
     @ResponseBody
     public String verifyPayment(@RequestBody Map<String,Object> data,HttpSession session,Principal principal) throws RazorpayException {
@@ -196,8 +180,6 @@ public class OrderController {
 
         return response.toString();
     }
-
-
     @GetMapping("/order-confirmation")
     public String getOrderConfirmation(Model model,HttpSession session){
 
@@ -216,8 +198,6 @@ public class OrderController {
 
         return "order-detail";
     }
-
-
     @GetMapping("/orders")
     public String getOrder(Principal principal,Model model){
         if (principal == null) {

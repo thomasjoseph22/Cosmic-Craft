@@ -18,18 +18,12 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
-
     private ShoppingCartService shoppingCartService;
-
     private ProductRepository productRepository;
-
     private AddressService addressService;
-
     private WalletService walletService;
-
     public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, ShoppingCartService shoppingCartService,
                             ProductRepository productRepository,AddressService addressService, WalletService walletService) {
         this.addressService=addressService;
@@ -39,64 +33,58 @@ public class OrderServiceImpl implements OrderService {
         this.shoppingCartService = shoppingCartService;
         this.walletService=walletService;
     }
-
     @Override
     public Order save(ShoppingCart cart, long address_id, String paymentMethod, Double oldTotalPrice) {
         Order order = new Order();
         order.setOrderDate(new Date());
         order.setCustomer(cart.getCustomer());
-        order.setTotalPrice(cart.getTotalPrice());
+        if (cart.getTotalItems() >= 3) {
+            double discountPercentage = 0.10;
+            double discountAmount = cart.getTotalPrice() * discountPercentage;
+            double discountedTotalPrice = cart.getTotalPrice() - discountAmount;
+
+            order.setTotalPrice(discountedTotalPrice);
+            order.setDiscountPrice(discountAmount);
+        } else {
+            order.setTotalPrice(cart.getTotalPrice());
+        }
+
         order.setQuantity(cart.getTotalItems());
         order.setPaymentMethod(paymentMethod);
         order.setShippingAddress(addressService.findByIdOrder(address_id));
         order.setAccept(false);
         order.setOrderStatus("Pending");
-        if(oldTotalPrice != null){
-            Double discount= oldTotalPrice - cart.getTotalPrice();
-            String formattedDiscount = String.format("%.2f", discount);
-            order.setDiscountPrice(Double.parseDouble(formattedDiscount));
-        }
-        List<OrderDetail> orderDetailList=new ArrayList<>();
-        for(CartItem item : cart.getCartItems()){
-            Product product=item.getProduct();
-            int requestedQuantity = item.getQuantity();
 
-            // Validate if requested quantity exceeds available quantity
+        List<OrderDetail> orderDetailList = new ArrayList<>();
+
+        for (CartItem item : cart.getCartItems()) {
+            Product product = item.getProduct();
+            int requestedQuantity = item.getQuantity();
             if (requestedQuantity > product.getCurrentQuantity()) {
                 throw new IllegalArgumentException("Requested quantity exceeds available quantity for product: " + product.getName());
             }
-
-            // Update the available quantity
             int newQuantity = product.getCurrentQuantity() - requestedQuantity;
             product.setCurrentQuantity(newQuantity);
             productRepository.save(product);
-
-            // Create and save OrderDetail
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProduct(item.getProduct());
             orderDetail.setSize(item.getSize());
             orderDetail.setQuantity(requestedQuantity);
-            //save to repo
             orderDetailRepository.save(orderDetail);
-            //add to list
             orderDetailList.add(orderDetail);
         }
         order.setOrderDetails(orderDetailList);
-        if(paymentMethod.equals("COD")) {
+        if (paymentMethod.equals("COD")) {
             order.setPaymentStatus("Pending");
             shoppingCartService.deleteCartById(cart.getId());
         }
-
-
         return orderRepository.save(order);
     }
-
     @Override
     public void cancelOrder(long order_id) {
         Order order=orderRepository.getById(order_id);
         Customer customer=order.getCustomer();
-
         List<OrderDetail>orderDetailList=order.getOrderDetails();
         for(OrderDetail orderDetail : orderDetailList){
             Product product = orderDetail.getProduct();
@@ -112,12 +100,10 @@ public class OrderServiceImpl implements OrderService {
             walletService.returnCredit(order,customer);
         }
     }
-
     @Override
     public List<Order> findAllOrders() {
         return orderRepository.findAll();
     }
-
     @Override
     public void acceptOrder(long id) {
         Order order=orderRepository.getById(id);
@@ -130,56 +116,43 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus("Confirmed");
         orderRepository.save(order);
     }
-
     @Override
     public Order findOrderById(long id) {
         return orderRepository.getById(id);
     }
-
     @Override
     public List<Order> findAllOrdersByCustomer(long id) {
         return orderRepository.findAllBy(id);
     }
-
     @Override
     public List<Long> findAllOrderCountForEachMonth() {
         List<Long>orderCounts=new ArrayList<>();
         LocalDate currentDate = LocalDate.now().withMonth(1);
-
         for(int i=0 ; i < 12 ; i++){
             LocalDate localStartDate=currentDate.withDayOfMonth(1);
             LocalDate localEndDate=currentDate.withDayOfMonth(currentDate.lengthOfMonth());
-
             long orderCount= orderRepository.countByOrderDateBetweenAndOrderStatus(localStartDate,localEndDate,"Delivered");
             orderCounts.add(orderCount);
             currentDate = currentDate.plusMonths(1);
-
         }
-
-
         return orderCounts;
     }
-
     @Override
     public Double getTotalOrderAmount() {
         return orderRepository.getTotalConfirmedOrdersAmount();
     }
-
     @Override
     public Long countTotalConfirmedOrders() {
         return orderRepository.countAllConfirmedOrders();
     }
-
     @Override
     public Double getTotalAmountForMonth() {
         LocalDate currentDate = LocalDate.now();
         LocalDate startDate=currentDate.withDayOfMonth(1);
         LocalDate endDate=currentDate.withDayOfMonth(currentDate.lengthOfMonth());
         Double totalAmount = orderRepository.getTotalConfirmedOrdersAmountForMonth(startDate,endDate,"Delivered");
-
         return totalAmount;
     }
-
     @Override
     public List<Double> getTotalAmountForEachMonth() {
         List<Double> totalRevenuePerMonth = new ArrayList<>();
@@ -194,11 +167,8 @@ public class OrderServiceImpl implements OrderService {
             currentDate = currentDate.plusMonths(1);
 
         }
-
         return totalRevenuePerMonth;
     }
-
-
     @Override
     public void updatePayment(Order order, boolean status) {
         if(status){
@@ -209,7 +179,6 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order);
         }
     }
-
     @Override
     public void updateOrderStatus(String status, long order_id) {
         if(order_id != 0) {
@@ -230,20 +199,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void returnOrder(long id, Customer customer) {
         Order order = orderRepository.findById(id);
-
         if (order.getOrderStatus().equals("Delivered")) {
             List<OrderDetail> orderDetails = order.getOrderDetails();
-
             for (OrderDetail orderDetail : orderDetails) {
                 Product product = orderDetail.getProduct();
                 int returnedQuantity = orderDetail.getQuantity();
-
-                // Update the product quantity
                 int newQuantity = product.getCurrentQuantity() + returnedQuantity;
                 product.setCurrentQuantity(newQuantity);
                 productRepository.save(product);
             }
-
             order.setOrderStatus("Returned");
             orderRepository.save(order);
         }

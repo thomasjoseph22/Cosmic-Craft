@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InvoiceController {
 
     @Autowired
-    private InvoiceService invoiceService;  // Make sure InvoiceService is correctly imported
+    private InvoiceService invoiceService;
 
     @GetMapping("/{orderId}")
     public ResponseEntity<Resource> downloadInvoice(@PathVariable Long orderId) {

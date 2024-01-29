@@ -8,11 +8,11 @@ import org.springframework.security.core.userdetails.User;
 import java.io.Serializable;
 import java.util.Collection;
 
-
-//CHECK HERE
 @Getter
 @Setter
 public class CustomerDetails extends User implements Serializable {
+
+    private long id;
 
     private String firstName;
 
@@ -21,8 +21,6 @@ public class CustomerDetails extends User implements Serializable {
     private String mobileNumber;
 
     private boolean is_activated;
-
-
 
     public CustomerDetails(String username, String password, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, String mobileNumber, boolean is_activated) {
         super(username, password, authorities);

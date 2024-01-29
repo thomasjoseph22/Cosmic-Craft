@@ -12,20 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CouponDto {
     private Long id;
-
     private String code;
-
     private String description;
-
     private int count;
-
     private int offPercentage;
-
     private int maxOff;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
-
-
     private boolean enabled;
 }

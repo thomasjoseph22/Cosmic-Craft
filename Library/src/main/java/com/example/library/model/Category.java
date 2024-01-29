@@ -18,13 +18,8 @@ public class Category {
     private Long id;
     private String name;
     private String description;
-
-
-
     @Column(name = "is_activated")
     private boolean activated;
     @Column(name = "is_deleted")
     private boolean deleted;
-
-
 }

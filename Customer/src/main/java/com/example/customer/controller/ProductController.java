@@ -4,10 +4,13 @@ import com.example.library.dto.ProductDto;
 import com.example.library.model.Category;
 import com.example.library.model.Customer;
 import com.example.library.model.Product;
+import com.example.library.model.Review;
 import com.example.library.service.CategoryService;
 import com.example.library.service.CustomerService;
 import com.example.library.service.ProductService;
+import com.example.library.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,19 +24,29 @@ import java.util.List;
 @Controller
 public class ProductController {
     private CategoryService categoryService;
-
     private ProductService productService;
-
     private CustomerService customerService;
-
-
+    @Autowired
+    private ReviewService reviewService;
     public ProductController(CategoryService categoryService, ProductService productService,
                              CustomerService customerService) {
         this.customerService=customerService;
         this.categoryService = categoryService;
         this.productService = productService;
     }
+    @GetMapping("/productDetails")
+    public String showProductDetails(@RequestParam("productId")Long id,Model model){
+        Product product=productService.getById(id);
 
+        Double reviewDto=reviewService.findRatingByProduct(id);
+        System.out.println("review rate="+reviewDto);
+        List<Review> reviews=reviewService.readReviewByProduct(id);
+        model.addAttribute("product",product);
+        model.addAttribute("tittle","productDetails");
+        model.addAttribute("rating",reviewDto);
+        model.addAttribute("reviews",reviews);
+        return "product-full";
+    }
     @GetMapping("/")
     public String getHomePage(Model model, Principal principal, HttpSession session){
         if (principal != null) {
@@ -74,7 +87,6 @@ public class ProductController {
 
         return "shop";
     }
-
     @GetMapping("/search-products/{pageNo}")
     public String searchProduct(@PathVariable("pageNo") int pageNo,
                                 @RequestParam(name = "keyword") String keyword,
@@ -90,8 +102,6 @@ public class ProductController {
         return "shop";
 
     }
-
-
     @GetMapping("/product-full/{id}")
     public String getProductFull(@PathVariable("id")long id,Model model){
         List<Category> categories = categoryService.findAllByActivatedTrue();

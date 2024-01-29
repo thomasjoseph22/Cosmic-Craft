@@ -18,12 +18,8 @@
 </head>
 <body>
 <header th:replace="~{fragments::hometop}"></header>
-
 <div th:replace="~{fragments::mobiletop}"></div>
-
-
 <div class="container">
-
     <section class="content-main">
         <div class="content-header">
             <div>
@@ -127,20 +123,12 @@
                     </div>
                 </div>
             </div>
-        </div><!-- card end// -->
-    </section> <!-- content-main end// -->
-
-
-
-
-
+        </div>
+    </section>
 </div>
-
-
 <footer th:replace="~{fragments::downbar}"></footer>
 <div th:replace = "~{fragments::script}"></div>
 <script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
-<!-- Template  JS -->
 <script th:src="@{/js/shop.js?v=3.4}"></script>
 </body>
 </html>

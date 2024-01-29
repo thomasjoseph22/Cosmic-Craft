@@ -10,16 +10,12 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
-    <!-- Template CSS -->
     <link rel="stylesheet" th:href="@{/css/main.css?v=3.4}">
 </head>
 <body>
 <header th:replace="~{fragments::hometop}" ></header>
-
 <div th:replace="~{fragments::mobiletop}"></div>
-
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -115,14 +111,9 @@
                         </ul>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </section>
-
-
-
     <div class="container">
         <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
             <nav aria-label="...">
@@ -141,31 +132,17 @@
             </nav>
         </div>
     </div>
-
-
 </main>
-
-
-
-
-
-
-
 <footer th:replace="~{fragments::downbar}"></footer>
-
-
 <div th:replace = "~{fragments::script}"></div>
 <script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
 <!-- Template  JS -->
 <script th:src="@{/js/shop.js?v=3.4}"></script>
-
 <script>
     $(document).ready(function () {
         $(".action-btn").click(function (event) {
             event.preventDefault();
-
             const productId = $(this).data("product-id");
-
             console.log(productId);
             $.ajax({
                 url: "/customer/add-wishlist",
@@ -188,8 +165,5 @@
         });
     });
 </script>
-
-
-
 </body>
 </html>

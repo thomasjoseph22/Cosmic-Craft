@@ -18,17 +18,14 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id")
     private long id;
-
     private String address_line_1;
     private String address_line_2;
     private String city;
     private String Country;
     private String pincode;
     private boolean is_default;
-
     @OneToMany(mappedBy = "shippingAddress")
     private List<Order> order;
-
     @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;

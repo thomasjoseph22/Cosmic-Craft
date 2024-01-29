@@ -16,15 +16,10 @@ import java.util.List;
 
 @Service
 public class OfferServiceImpl implements OfferService {
-
     private OfferRepository offerRepository;
-
     private ProductService productService;
-
     private CategoryService categoryService;
-
     private ProductRepository productRepository;
-
     public OfferServiceImpl(OfferRepository offerRepository,ProductService productService,
                             CategoryService categoryService, ProductRepository productRepository
     ) {
@@ -37,11 +32,8 @@ public class OfferServiceImpl implements OfferService {
     public List<OfferDto> getAllOffers() {
         List<Offer> offerList=offerRepository.findAll();
         List<OfferDto> offerDtoList=transfer(offerList);
-
-
         return offerDtoList;
     }
-
     @Override
     public Offer Save(OfferDto offerDto) {
         Offer offer = new Offer();
@@ -75,16 +67,10 @@ public class OfferServiceImpl implements OfferService {
                 product.setSalePrice(salePrice);
                 productRepository.save(product);
             }
-
         }
-
         offerRepository.save(offer);
-
-
         return offer;
-
     }
-
     @Override
     public OfferDto findById(long id) {
         Offer offer=offerRepository.findById(id);
@@ -102,8 +88,6 @@ public class OfferServiceImpl implements OfferService {
             offerDto.setApplicableForCategoryName(offer.getApplicableForCategoryName());
         }
         offerDto.setEnabled(offer.isEnabled());
-
-
         return offerDto;
     }
 
@@ -111,7 +95,6 @@ public class OfferServiceImpl implements OfferService {
     public Offer update(OfferDto offerDto) {
         long id=offerDto.getId();
         Offer offer=offerRepository.findById(id);
-
         offer.setName(offerDto.getName());
         offer.setDescription(offerDto.getDescription());
         offer.setOffPercentage(offerDto.getOffPercentage());
@@ -158,35 +141,23 @@ public class OfferServiceImpl implements OfferService {
                 product.setSalePrice(salePrice);
                 productRepository.save(product);
             }
-
-
         }
-
         offerRepository.save(offer);
-
-
         return offer;
     }
-
     public void updateProductPrice(long id){
         Product product=productService.findBYId(id);
         product.setSalePrice(0);
         productRepository.save(product);
-
     }
-
     public void updateCategoryPrice(long id){
-
         Category category= categoryService.findById(id);
         List<Product> productList = productService.findProductsByCategory(category.getId());
         for(Product product : productList){
             product.setSalePrice(0);
             productRepository.save(product);
         }
-
     }
-
-
     @Override
     public void disable(long id) {
         Offer offer=offerRepository.findById(id);
@@ -261,10 +232,7 @@ public class OfferServiceImpl implements OfferService {
             }
         }
         offerRepository.deleteById(offer.getId());
-
     }
-
-
     public List<OfferDto> transfer(List<Offer> offerList){
         List<OfferDto> offerDtoList=new ArrayList<>();
         for(Offer offer : offerList) {

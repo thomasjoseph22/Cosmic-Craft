@@ -5,27 +5,32 @@ import com.example.library.dto.CustomerDto;
 import com.example.library.model.Customer;
 import com.example.library.repository.CustomerRepository;
 import com.example.library.service.CustomerService;
+
+import java.util.Optional;
+
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
     private CustomerRepository customerRepository;
-
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
     @Override
     public Customer findByEmail(String email) {
 
         return customerRepository.findByEmail(email);
     }
-
     @Override
-    public Customer save(CustomerDto customerDto) {
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+    @Override
+    public Customer save(@Valid CustomerDto customerDto) {
         Customer customer = new Customer();
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
@@ -52,7 +57,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer=findById(id);
         customer.set_activated(false);
         customerRepository.save(customer);
-
     }
 
     @Override
@@ -66,7 +70,6 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer update(CustomerDto customerDto) {
         Customer customer=customerRepository.findByEmail(customerDto.getEmail());
         customer.setPassword(customerDto.getPassword());
-
         return customerRepository.save(customer);
     }
 
@@ -82,10 +85,8 @@ public class CustomerServiceImpl implements CustomerService {
         customerDto.setAddress(customer.getAddress());
         customerDto.setPassword(customer.getPassword());
         customerDto.set_activated(customer.is_activated());
-
         return customerDto;
     }
-
     @Override
     public CustomerDto updateAccount(CustomerDto customerDto, String email) {
         Customer customer= findByEmail(email);
@@ -96,17 +97,12 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerDto customerDtoUpdated = convertEntityToDto(customer);
         return customerDtoUpdated;
     }
-
     @Override
     public void changePass(CustomerDto customerDto) {
         Customer customer=customerRepository.findByEmail(customerDto.getEmail());
         customer.setPassword(customerDto.getPassword());
-
         customerRepository.save(customer);
     }
-
-
-
     public CustomerDto convertEntityToDto(Customer customer){
         CustomerDto customerDto=new CustomerDto();
         customerDto.setId(customer.getId());
@@ -115,14 +111,8 @@ public class CustomerServiceImpl implements CustomerService {
         customerDto.setMobileNumber(customer.getMobileNumber());
         customerDto.set_activated(customer.is_activated());
         customerDto.setPassword(customer.getPassword());
-
         return customerDto;
     }
-
-
-
-
-
 
     public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
         Customer customer = customerRepository.findByEmail(email);
@@ -135,13 +125,30 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public Customer getByResetPasswordToken(String token) {
+
         return customerRepository.findByResetPasswordToken(token);
     }
 
     public void updatePassword(Customer customer, String newPassword) {
         customer.setPassword(newPassword);
-
         customer.setResetPasswordToken(null);
         customerRepository.save(customer);
+    }
+    @Override
+    public void updateReferalCodeToken(String token, String email) {
+        Customer customer=customerRepository.findByEmail(email);
+        if(customer!=null){
+            customer.setReferalToken(token);
+            customerRepository.save(customer);
+        }
+    }
+    @Override
+    public Optional<List<Customer>> getByReferalToken(String token) {
+        return Optional.ofNullable(customerRepository.findByReferalToken(token));
+    }
+
+    @Override
+    public Customer getById(Long id) {
+        return customerRepository.findById(id).orElse(null);
     }
 }

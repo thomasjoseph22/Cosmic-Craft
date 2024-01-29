@@ -13,6 +13,8 @@ public interface WalletService {
 
     Wallet findByCustomer(Customer customer);
 
+    void save(Wallet wallet);
+
     WalletHistory save(double amount, Customer customer);
 
     WalletHistory findById(long id);
@@ -22,4 +24,7 @@ public interface WalletService {
     void debit(Wallet wallet,double totalPrice);
 
     void returnCredit(Order order, Customer customer);
+
+    void addWalletToReferalEarn(long id);
+
 }

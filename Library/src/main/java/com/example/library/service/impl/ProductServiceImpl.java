@@ -27,16 +27,11 @@ import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-
     private ProductRepository productRepository;
     private ImageRepository imageRepository;
-
-
     private ImageUpload imageUpload;
     private CartItemRepository cartItemRepository;
-
     private WishlistRepository wishlistRepository;
-
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository,
                               ImageUpload imageUpload, ImageRepository imageRepository, CartItemRepository cartItemRepository, WishlistRepository wishlistRepository) {
@@ -46,12 +41,14 @@ public class ProductServiceImpl implements ProductService {
         this.cartItemRepository=cartItemRepository;
         this.wishlistRepository=wishlistRepository;
     }
-
+    @Override
+    public Product getById(Long id) {
+        return productRepository.getById(id);
+    }
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
-
     @Override
     public List<ProductDto> allProducts() {
         List<Product> products = productRepository.findAll();
@@ -78,12 +75,10 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDtos;
     }
-
     @Override
     public Product save(List<MultipartFile> imageProducts, ProductDto productDto) {
         Product product = new Product();
         try {
-
             product.setName(productDto.getName());
             product.setBrand(productDto.getBrand());
             product.setShortDescription(productDto.getShortDescription());
@@ -113,7 +108,6 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
-
     @Override
     public ProductDto findById(long id) {
         Product product = productRepository.findById(id);
@@ -131,15 +125,11 @@ public class ProductServiceImpl implements ProductService {
         productDto.setActivated(product.is_activated());
         return productDto;
     }
-
     @Override
     public Product update(List<MultipartFile> imageProducts, ProductDto productDto) {
         try {
             long id= productDto.getId();
             Product productUpdate = productRepository.findById(id);
-
-
-
             productUpdate.setCategory(productDto.getCategory());
             productUpdate.setName(productDto.getName());
             productUpdate.setBrand(productUpdate.getBrand());
@@ -162,14 +152,12 @@ public class ProductServiceImpl implements ProductService {
                 }
                 productUpdate.setImage(imagesList);
             }
-
             return productUpdate;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
     @Override
     public void disable(long id) {
         Product product=productRepository.findById(id);
@@ -182,11 +170,8 @@ public class ProductServiceImpl implements ProductService {
     public void enable(long id) {
         Product product=productRepository.findById(id);
         product.set_activated(true);
-
         productRepository.save(product);
-
     }
-
     @Override
     public Page<ProductDto> findAllByActivated(long id,int pageNo) {
         List<Product> products=productRepository.findAllByActivatedTrue(id);
@@ -271,8 +256,6 @@ public class ProductServiceImpl implements ProductService {
     public List<Object[]> getProductsStatsBetweenDates(Date startDate, Date endDate) {
         return productRepository.getProductsStatsForConfirmedOrdersBetweenDates(startDate,endDate);
     }
-
-
     @Override
     public Product findBYId(long id) {
         return productRepository.findById(id);

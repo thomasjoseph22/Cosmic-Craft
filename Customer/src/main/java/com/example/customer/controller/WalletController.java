@@ -31,26 +31,16 @@ public class WalletController {
         this.customerService=customerService;
         this.walletService = walletService;
     }
-
-
     @GetMapping("/wallets")
     public String getWalletTab(Principal principal, Model model){
         if(principal==null){
             return "redirect:/login";
         }
         Customer customer=customerService.findByEmail(principal.getName());
-
         Wallet wallet=walletService.findByCustomer(customer);
-
         List<WalletHistoryDto> walletHistoryDtoList=walletService.findAllById(wallet.getId());
-
-
         model.addAttribute("walletHistoryList",walletHistoryDtoList);
-
         model.addAttribute("wallet",wallet);
-
-
-
         return "wallets";
     }
 
@@ -60,12 +50,9 @@ public class WalletController {
     @ResponseBody
     public String addWallet(@RequestBody Map<String,Object> data, Principal principal,
                             HttpSession session, Model model) throws RazorpayException {
-
         if(principal==null){
             return "redirect:/login";
         }
-
-
         Customer customer=customerService.findByEmail(principal.getName());
 
         double amount = Double.parseDouble(data.get("amount").toString());

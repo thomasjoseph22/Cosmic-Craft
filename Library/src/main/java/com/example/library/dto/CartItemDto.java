@@ -12,7 +12,5 @@ public class CartItemDto {
     private double unitPrice;
     private int quantity;
     private ProductDto product;
-
-
     private ShoppingCartDto cart;
 }

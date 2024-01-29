@@ -41,6 +41,8 @@ public interface ProductService {
 
     Product findBYId(long id);
 
+    Product getById(Long id);
+
     List<Product> findProductsByCategory(long id);
 
     Page<ProductDto> searchProducts(int pageNo,String keyword);

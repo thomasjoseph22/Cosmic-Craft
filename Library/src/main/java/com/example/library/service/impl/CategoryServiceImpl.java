@@ -12,16 +12,12 @@ import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
     private CategoryRepository categoryRepository;
-
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
 
         this.categoryRepository = categoryRepository;
     }
-
-
     @Override
     public Category save(CategoryDto categoryDto) {
         Category category=new Category();

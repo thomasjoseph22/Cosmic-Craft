@@ -16,7 +16,6 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-
 <header class="header-area header-style-1 header-height-2">
     <div class="header-top header-top-ptb-1 d-none d-lg-block" style="background-color: black">
         <div class="container">
@@ -95,8 +94,6 @@
                         <div class="categori-dropdown-wrap categori-dropdown-active-large">
                             <ul th:each="category : ${categories}">
                                 <a th:href="@{/products-list(id=${category.id})}"><li  th:text="${category.name}"></li></a>
-
-
                             </ul>
                         </div>
                     </div>
@@ -105,14 +102,12 @@
                             <ul>
                                 <li><a class="active" th:href="@{/}" style="color: #39cccc">Home </a>
                                 </li>
-
                                 <li><a th:href="@{/products-list}" style="color: #39cccc">Shop</a>
                                 </li>
                                 <li><a th:href="@{/dashboard}" style="color: white">My Account</a>
                                 </li>
                                 <li><a th:href="@{/wallets}" style="color: white">Wallet</a>
                                 </li>
-
                             </ul>
                         </nav>
                     </div>
@@ -176,21 +171,16 @@
                         </ul>
                     </div>
                 </div>
-                <!-- mobile menu start -->
                 <nav>
                     <ul class="mobile-menu">
-
                         <li><a class="active" th:href="@{/}">Home </a>
                         </li>
-
                         <li><a th:href="@{/products-list}">Shop</a>
                         </li>
                         <li><a th:href="@{/dashboard}">My Account</a>
                         </li>
-
                     </ul>
                 </nav>
-                <!-- mobile menu end -->
             </div>
             <div class="mobile-header-info-wrap mobile-header-border">
                 <div class="single-mobile-header-info mt-30">
@@ -254,10 +244,7 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
-
 <main class="main">
-
     <section class="product-tabs section-padding position-relative wow fadeIn animated">
         <div class="container">
             <div class="tab-header">
@@ -265,12 +252,8 @@
                     <li class="nav-item" role="presentation" style="background-color: black;color: #39cccc;border-radius: 10px">
                         <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one"  style="background-color: black;color: #39cccc;border-radius: 30px" aria-selected="true">Cosmic Level Products</button>
                     </li>
-
                 </ul>
             </div>
-
-
-            <!--End nav-tabs-->
             <div class="tab-content wow fadeIn animated" id="myTabContent">
                 <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                     <div class="row product-grid-4" >
@@ -316,12 +299,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </section>
-
     <section class="popular-categories section-padding mt-15 mb-25">
         <div class="container wow fadeIn animated">
             <h3 class="section-title mb-20"><span style="color: #0dcaf0">Popular</span> Categories</h3>
@@ -373,7 +353,6 @@
             </div>
         </div>
     </section>
-
 </main>
 <footer class="main">
     <section class="newsletter p-30 text-white wow fadeIn animated" style="background-color: black">
@@ -393,9 +372,6 @@
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <!-- Subscribe Form -->
-
-                    <!-- End Subscribe Form -->
                 </div>
             </div>
         </div>
@@ -479,7 +455,6 @@
         </div>
     </div>
 </footer>
-<!-- Preloader Start -->
 <div id="preloader-active">
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="preloader-inner position-relative">
@@ -499,9 +474,6 @@
 <script th:src="@{/js/plugins/jquery.elevatezoom.js}"></script>
 <!-- Template  JS -->
 <script th:src="@{/js/shop.js?v=3.4}"></script>
-
-
-
 <script>
     function submitForm(productId) {
         console.log("clicked");
@@ -535,8 +507,6 @@
         });
         return false;
     }
-
-
     function showModal(message) {
         // Create or update a Bootstrap modal
         $('#myModal').remove(); // Remove existing modal if any
@@ -561,10 +531,7 @@
     }
 
 </script>
-
 </body>
-
 </html>
-
 </body>
 </html>

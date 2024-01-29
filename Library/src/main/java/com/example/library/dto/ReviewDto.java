@@ -1,16 +1,21 @@
 package com.example.library.dto;
 
-import com.example.library.model.Product;
+import com.example.library.model.Customer;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.sql.Date;
-@Data
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class ReviewDto {
+    private Long id;
     private String comment;
-
+    private LocalDate reviewDate;
+    private Customer customer;
+    private Double rating;
+    private Double avgRating;
 }
+
+

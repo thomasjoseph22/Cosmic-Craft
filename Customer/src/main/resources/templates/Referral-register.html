@@ -12,17 +12,17 @@
     <title th:text="${title}"></title>
     <link rel="shortcut icon" type="image/x-icon" href="/customer/imgs/images/custLogo.png">
     <link rel="stylesheet" th:href="@{/css/main.css}">
-     <style>
-    body {
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-    .login_wrap {
-        background: rgba(255, 255, 255, 0.4);
-        height: 600px;
-    }
-</style>
+    <style>
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .login_wrap {
+            background: rgba(255, 255, 255, 0.4);
+            height: 600px;
+        }
+    </style>
 </head>
 <body style="background-image: url(https://images.alphacoders.com/112/1128087.jpg);">
 <section class="pt-150 pb-150" style="margin-left: -450px">
@@ -30,14 +30,15 @@
         <div class="row">
             <div class="col-lg-10 m-auto">
                 <div class="row">
-                    <div class="col-lg-1"></div>
+                    <div class="ReferralCode"></div>
                     <div class="col-lg-6">
                         <div class="login_wrap widget-taber-content p-30  border-radius-5" >
+
                             <div class="padding_eight_all " style="margin-top: 30px">
-                                <div class="heading_s1">
+                                <div class="heading_s1"  >
                                     <h3 class="mb-30">Create an Account</h3>
                                 </div>
-                                <form id="signupForm" th:action = "@{/do-register}" method="POST" th:object = "${customerDto}">
+                                <form id="signupForm" th:action = "@{/registration1}" th:object = "${users}" method="post" >
                                     <div th:if="${param.success}">
                                         <p class="alert alert-success" th:text="${success}">Account registered Successfully</p>
                                     </div>
@@ -80,6 +81,10 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-fill-out btn-block hover-up " style="background-color: #39cccc;margin-left: 120px">Submit &amp; Register</button>
                                     </div>
+
+                                    <div>
+                                        <input type="hidden" name="referredBy" th:value="${referringUserId}" />
+                                    </div>
                                 </form>
                                 <div class="text-muted text-center"><p style="color: black;display: inline">Already have an account?</p> <a th:href="@{/login}" style="color: #39cccc">Log in now</a></div>
                             </div>
@@ -111,35 +116,5 @@
 <script src="/js/plugins/jquery.vticker-min.js"></script>
 <script src="/js/plugins/jquery.theia.sticky.js"></script>
 <script src="/js/main.js?v=3.4"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var signupForm = document.getElementById('signupForm');
-        var mobileNumberInput = document.getElementById('phone');
-        signupForm.addEventListener('submit', function (event) {
-            var inputValue = mobileNumberInput.value;
-            var mobileNumberError = mobileNumberInput.nextElementSibling;
-            if (inputValue.trim() === '') {
-                mobileNumberError.textContent = 'Mobile number cannot be empty';
-                event.preventDefault();
-            } else {
-                var mobileNumberPattern = /^\d{10}$/;
-                if (!mobileNumberPattern.test(inputValue)) {
-                    mobileNumberError.textContent = 'Invalid mobile number format';
-                    event.preventDefault();
-                } else {
-                    mobileNumberError.textContent = '';
-                }
-            }
-            if (!document.getElementById('firstName').value.trim() || !document.getElementById('lastName').value.trim() ||
-                !document.getElementById('email').value.trim() || !inputValue.trim() ||
-                !document.getElementById('password').value.trim() || !document.getElementById('rePassword').value.trim()) {
-                document.querySelector('.error.text-danger.ms-2').textContent = 'Fill the form Correctly !';
-                event.preventDefault();
-            } else {
-                document.querySelector('.error.text-danger.ms-2').textContent = '';
-            }
-        });
-    });
-</script>
 </body>
 </html>

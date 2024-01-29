@@ -11,10 +11,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <link rel="shortcut icon" type="image/x-icon" href="/imgs/images/customerlogo.png">
-
     <title th:text="${title}"></title>
-
-
     <link rel="stylesheet" th:href="@{/css/main.css}">
 <style>
     .login_wrap {
@@ -22,14 +19,9 @@
         border-radius: 10px;
     }
 </style>
-
 </head>
 <body style="background-image: url(https://wallpapercave.com/wp/wp3110695.jpg)">
 <header th:replace="~{fragments::topbar}"></header>
-
-
-
-
 <section class="pt-150 pb-150" >
     <div class="container">
         <div class="row">
@@ -70,16 +62,9 @@
         </div>
     </div>
 </section>
-
-
-
 <footer th:replace="~{fragments::downbar}">
-
 </footer>
-
-
 <div th:replace = "~{fragments::script}"></div>
 <script src="/js/shop.js?v=3.4"></script>
-
 </body>
 </html>

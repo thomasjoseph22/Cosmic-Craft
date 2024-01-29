@@ -7,32 +7,43 @@ import com.example.library.model.Customer;
 import com.example.library.model.Order;
 import com.example.library.model.Wallet;
 import com.example.library.model.WalletHistory;
+import com.example.library.repository.CustomerRepository;
 import com.example.library.repository.WalletHistoryRepository;
 import com.example.library.repository.WalletRepository;
 import com.example.library.service.WalletService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WalletServiceImpl implements WalletService {
-    private WalletRepository walletRepository;
+    private final WalletRepository walletRepository;
+    private final CustomerRepository customerRepository;
+    private final WalletHistoryRepository walletHistoryRepository;
 
-    private WalletHistoryRepository walletHistoryRepository;
-
+    @Autowired
     public WalletServiceImpl(WalletRepository walletRepository,
+                             CustomerRepository customerRepository,
                              WalletHistoryRepository walletHistoryRepository) {
-        this.walletHistoryRepository=walletHistoryRepository;
         this.walletRepository = walletRepository;
+        this.customerRepository = customerRepository;
+        this.walletHistoryRepository = walletHistoryRepository;
     }
 
     @Override
     public List<WalletHistoryDto> findAllById(long id) {
         List<WalletHistory> walletHistory =walletHistoryRepository.findAllById(id);
         List<WalletHistoryDto> walletHistoryDtoList=transferData(walletHistory);
-
         return walletHistoryDtoList;
+    }
+
+    @Override
+    public void save(Wallet wallet) {
+        walletRepository.save(wallet);
     }
 
     @Override
@@ -45,7 +56,6 @@ public class WalletServiceImpl implements WalletService {
             walletRepository.save(wallet);
         }else{
             wallet=customer.getWallet();
-
         }
         return wallet;
     }
@@ -58,13 +68,10 @@ public class WalletServiceImpl implements WalletService {
         walletHistory.setType(WalletTransactionType.CREDITED);
         walletHistory.setAmount(amount);
         walletHistoryRepository.save(walletHistory);
-
         return walletHistory;
     }
-
     @Override
     public WalletHistory findById(long id) {
-
         WalletHistory walletHistory=walletHistoryRepository.findById(id);
         return walletHistory;
     }
@@ -81,8 +88,6 @@ public class WalletServiceImpl implements WalletService {
             walletHistory.setTransactionStatus("Failed");
             walletHistoryRepository.save(walletHistory);
         }
-
-
     }
 
     @Override
@@ -108,14 +113,42 @@ public class WalletServiceImpl implements WalletService {
         walletHistory.setTransactionStatus("Success");
         walletHistory.setAmount(order.getTotalPrice());
         walletHistoryRepository.save(walletHistory);
-
+    }
+    @Override
+    public void addWalletToReferalEarn(long id) {
+        try {
+            Customer customer = customerRepository.getReferenceById(id);
+            List<Customer> optionalReferrer = customerRepository.findByReferalToken(customer.getReferalToken());
+            if (!optionalReferrer.isEmpty()) {
+                Customer referrer = optionalReferrer.get(0);
+                Wallet wallet = findByCustomer(referrer);
+                if (wallet != null) {
+                    wallet.setBalance(wallet.getBalance() + 100);
+                    System.out.println("Wallet balance increased successfully");
+                } else {
+                    wallet = new Wallet();
+                    wallet.setCustomer(referrer);
+                    wallet.setBalance(100);
+                }
+                walletRepository.save(wallet);
+                WalletHistory walletHistory = new WalletHistory();
+                walletHistory.setWallet(wallet);
+                walletHistory.setAmount(100);
+                walletHistory.setTransactionStatus("Credit");
+                walletHistory.setTrasactionType("Referral Earning");
+                walletHistory.setTransationDate(new Date());
+                walletHistoryRepository.save(walletHistory);
+                System.out.println("Wallet history saved successfully");
+            } else {
+                System.out.println("Referrer not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
     public List<WalletHistoryDto> transferData(List<WalletHistory> walletHistoryList){
-
         List<WalletHistoryDto>walletHistoryDtoList=new ArrayList<>();
-
         for(WalletHistory walletHistory : walletHistoryList){
             WalletHistoryDto walletHistoryDto=new WalletHistoryDto();
             walletHistoryDto.setId(walletHistory.getId());
@@ -125,8 +158,7 @@ public class WalletServiceImpl implements WalletService {
             walletHistoryDto.setTransactionStatus(walletHistory.getTransactionStatus());
             walletHistoryDtoList.add(walletHistoryDto);
         }
-
-
         return walletHistoryDtoList;
     }
 }
+

@@ -31,49 +31,32 @@ public class WishlistController {
         }
         Customer customer=customerService.findByEmail(principal.getName());
         List<Wishlist> wishlists=wishlistService.findAllByCustomer(customer);
-
         if (wishlists.isEmpty()) {
             model.addAttribute("check","You don't have any items in your WishList");
 
         }
-
         model.addAttribute("wishlists",wishlists);
-
-
         return "wishlist";
     }
-
-
     @PostMapping("/add-wishlist")
     @ResponseBody
     public ResponseEntity<String> addToWishlist(Principal principal, @RequestParam("productId") long productId) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
         }
-
-
-
         Customer customer = customerService.findByEmail(principal.getName());
-
         boolean exists = wishlistService.findByProductId(productId, customer);
-
-
         if (exists) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Product already exists in wishlist");
         }
-
         wishlistService.save(productId,customer);
-
         return ResponseEntity.status(HttpStatus.OK).body("Product added to wishlist successfully  ");
     }
 
     @GetMapping("/delete-wishlist/{id}")
     public String delete(@PathVariable("id")long wishlistId, RedirectAttributes redirectAttributes){
-
         wishlistService.deleteWishlist(wishlistId);
-
         redirectAttributes.addFlashAttribute("success","Removed Successfully");
-
         return "redirect:/wishlist";
     }
 }

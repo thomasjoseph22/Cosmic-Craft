@@ -43,19 +43,16 @@
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
 <script>
     function validateForm() {
         var otpInput = document.getElementById("form2Example27").value.trim();
         if (otpInput === "" || isNaN(otpInput)) {
             alert("Invalid input. Please enter a valid OTP (numeric characters only).");
-            return false; // Prevent form submission
+            return false;
         }
-        return true; // Allow form submission
+        return true;
     }
 </script>
-
 </body>
 </html>

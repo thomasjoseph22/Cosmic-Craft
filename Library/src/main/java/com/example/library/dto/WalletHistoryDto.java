@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WalletHistoryDto {
     private Long id;
-
     private double amount;
-
     private WalletTransactionType type;
-
     private String transactionStatus;
-
     private Wallet wallet;
 }
