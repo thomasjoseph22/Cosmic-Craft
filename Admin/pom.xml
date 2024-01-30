@@ -8,7 +8,7 @@
         <version>3.1.5</version>
         <relativePath/>
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.example.admin</groupId>
     <artifactId>Admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Admin</name>
