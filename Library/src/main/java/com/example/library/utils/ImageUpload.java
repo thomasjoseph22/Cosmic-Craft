@@ -17,9 +17,9 @@ public class ImageUpload {
 
 
 
-    String UPLOAD_FOLDER = "/Admin/src/main/resources/static/imgs/images";
+    String UPLOAD_FOLDER = "/home/ubuntu/cosmiccraft/Admin/src/main/resources/static/imgs/images";
 
-    String UPLOAD_FOLDER_CUSTOMER ="/Customer/src/main/resources/static/imgs/images";
+    String UPLOAD_FOLDER_CUSTOMER ="/home/ubuntu/cosmiccraft/Customer/src/main/resources/static/imgs/images";
 
 
     public String storeFile(MultipartFile file) throws IOException {
