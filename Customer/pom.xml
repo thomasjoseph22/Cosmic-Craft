@@ -60,7 +60,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-
             <groupId>com.example.library</groupId>
             <artifactId>Library</artifactId>
             <version>0.0.1-SNAPSHOT</version>
