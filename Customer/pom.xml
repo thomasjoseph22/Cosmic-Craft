@@ -42,12 +42,10 @@
             <artifactId>modelmapper</artifactId>
             <version>3.2.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
-            <version>1.6.2</version> <!-- Use the latest version available -->
+            <version>1.6.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,12 +83,12 @@
         <dependency>
             <groupId>com.razorpay</groupId>
             <artifactId>razorpay-java</artifactId>
-            <version>1.4.4</version> <!-- Use the latest version available -->
+            <version>1.4.4</version>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.10</version> <!-- Use the latest version available -->
+            <version>1.14.10</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
