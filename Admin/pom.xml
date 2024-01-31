@@ -8,7 +8,7 @@
         <version>3.1.5</version>
         <relativePath/>
     </parent>
-    <groupId>com.example.admin</groupId>
+    <groupId>com.example</groupId>
     <artifactId>Admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Admin</name>
@@ -50,7 +50,7 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.example.library</groupId>
+            <groupId>com.example</groupId>
             <artifactId>Library</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
