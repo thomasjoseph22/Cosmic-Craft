@@ -10,6 +10,8 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/imgs/theme/favicon.svg}">
     <!-- Template CSS -->
@@ -38,7 +40,8 @@
                             <th scope="col">Price</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Subtotal</th>
-                            <th scope="col">Remove</th>
+                            <th scope="col" style="padding-right: 250px">Update Quantity</th>
+                            <th scope="col" style="margin-left:-30px">Remove</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -69,16 +72,15 @@
                                 <td class="total-pr">
                                     <p th:text="'₹' + ${cartItem.unitPrice * cartItem.quantity}"></p>
                                 </td>
-                                <td class="action" data-title="Remove">
-                                    <button type="submit" name="action" value="update" title="Update"
-                                            class="btn btn-primary">
+                                <td class="action" data-title="Remove" style="display: flex; justify-content: center; align-items: center;" >
+                                    <button type="submit" name="action" value="update" title="Update" class="btn btn-primary" style="margin-left: 50px;">
                                         Update
                                     </button>
-                                    <button type="submit" name="action" value="delete" title="Update"
-                                            class="btn btn-danger">
+                                    <button type="submit" name="action" value="delete" title="Delete" class="btn btn-danger" style="margin-left: 150px;">
                                         Delete
                                     </button>
                                 </td>
+
                             </form>
                         </tr>
                         </tbody>
@@ -116,58 +118,6 @@
     </div>
     </div>
 </section>
-
-<script>
-    $(document).ready(function() {
-        // Attach event listener to quantity and size input fields
-        $('.c-input-text.qty, .c-input-text.size').on('input', function() {
-            // Update subtotal and grand total on the client side
-            updateSubtotalAndGrandTotal($(this));
-
-            // Trigger AJAX request to update the cart on the server
-            updateCartSize($(this));
-        });
-
-        function updateSubtotalAndGrandTotal(inputField) {
-            var quantity = parseInt(inputField.val());
-            var unitPrice = parseFloat(inputField.closest('tr').find('.price').text().replace('₹', '').trim());
-
-            // Calculate subtotal
-            var subtotal = quantity * unitPrice;
-            inputField.closest('tr').find('.total-pr p').text('₹' + subtotal);
-
-            // Update the grand total
-            var grandTotal = 0;
-            $('.total-pr p').each(function() {
-                grandTotal += parseFloat($(this).text().replace('₹', ''));
-            });
-
-            // Update the displayed grand total
-            $('#amount').text('₹' + grandTotal);
-        }
-
-        function updateCartSize(inputField) {
-            var productId = inputField.closest('tr').data('product-id');
-            var sizeId = inputField.val();
-            $.ajax({
-                url: '/update-cart',
-                type: 'POST',
-                data: {
-                    productId: productId,
-                    sizeId: sizeId
-                },
-                success: function(response) {
-                    alert("Successfully updated");
-                },
-                error: function(error) {
-                    alert("Some issue occurred");
-                }
-            });
-        }
-    });
-
-
-</script>
 
 <footer th:replace="~{fragments::downbar}"></footer>
 <div th:replace = "~{fragments::script}"></div>

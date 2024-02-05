@@ -254,7 +254,7 @@
                                         <div class="single-comment justify-content-between d-flex" th:each="review:${reviews}">
                                             <div class="user justify-content-between d-flex" >
                                                 <div class="thumb text-center col-md-4">
-                                                    <h6><a href="#" th:text="${review.customer.name}"></a></h6>
+                                                    <h6><a href="#" th:text="${review.customer.firstName}"></a></h6>
                                                 </div>
                                                 <div class="desc col-md-8">
                                                     <p th:text="${review.comment}">.</p>

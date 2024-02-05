@@ -43,5 +43,5 @@ public interface CustomerService {
     void updateReferalCodeToken(String token,String email);
 
 
-
+    List<Customer> getCustomersByReferralCode(String referralCode);
 }

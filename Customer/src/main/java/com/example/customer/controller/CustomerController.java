@@ -6,6 +6,7 @@ import com.example.library.model.Address;
 import com.example.library.model.Customer;
 import com.example.library.service.AddressService;
 import com.example.library.service.CustomerService;
+import com.example.library.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -28,14 +29,16 @@ public class CustomerController {
     private AddressService addressService;
 
     private PasswordEncoder passwordEncoder;
+    private ReviewService reviewService;
 
     private final ModelMapper modelMapper;
 
     public CustomerController(CustomerService customerService,AddressService addressService,
-                              PasswordEncoder passwordEncoder,ModelMapper modelMapper) {
+                              PasswordEncoder passwordEncoder,ReviewService reviewService,ModelMapper modelMapper) {
         this.passwordEncoder=passwordEncoder;
         this.addressService=addressService;
         this.customerService = customerService;
+        this.reviewService=reviewService;
         this.modelMapper=modelMapper;
     }
 

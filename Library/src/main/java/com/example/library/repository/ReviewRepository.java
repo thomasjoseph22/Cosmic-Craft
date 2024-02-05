@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findByProduct_Id(Long productId);
-    @Query("SELECT AVG(r.rating) FROM Review r WHERE r.product.id = ?1")
-    Optional<Double> findAverageRatingByProduct(Long productId);
+public interface ReviewRepository extends JpaRepository<Review,Long> {
+
+
+    @Query("select r from Review r where r.product.id=?1")
+    List<Review> readReviewByProduct(Long productId);
+
+    @Query("SELECT AVG (r.rating) as avgRating from Review r where r.product.id=?1")
+    Object findRatingByProduct(Long productId);
 }

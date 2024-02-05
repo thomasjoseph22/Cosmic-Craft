@@ -25,6 +25,6 @@ public interface WalletService {
 
     void returnCredit(Order order, Customer customer);
 
-    void addWalletToReferalEarn(long id);
+    void addWalletToReferalEarn(Long customerId);
 
 }

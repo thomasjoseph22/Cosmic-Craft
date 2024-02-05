@@ -54,26 +54,37 @@ public class ReferalController {
     public String showRegisterReferalUser(@ModelAttribute("users") CustomerDto customerDto,
                                           HttpServletRequest request) {
         String token = request.getParameter("token");
-
-        Optional<List<Customer>> optionalCustomerList = customerService.getByReferalToken(token);
-
-        if (optionalCustomerList.isPresent() && !optionalCustomerList.get().isEmpty()) {
-            List<Customer> customerList = optionalCustomerList.get();
-            Customer customer = customerList.get(0);
+        Optional<List<Customer>> customer = customerService.getByReferalToken(token);
+        if (customer.isPresent() && !customer.get().isEmpty()) {
+            List<Customer> customerList = customer.get();
+            Customer referrer = customerService.findByEmail(customerDto.getEmail());
             Customer customerByEmail = customerService.findByEmail(customerDto.getEmail());
             if (customerByEmail != null) {
                 return "redirect:/referal_link?exist&token=" + token;
             }
-            walletService.addWalletToReferalEarn(customer.getId());
-            customerService.save(customerDto);
+            Customer referredCustomer = customerService.save(customerDto);
+            boolean referralOfferSuccess = false;
+            try {
+                walletService.addWalletToReferalEarn(referredCustomer.getId());
+                System.out.println(referredCustomer.getEmail());
+                referralOfferSuccess = true;
+            } catch (Exception e) {
+                // Log or handle the exception as needed
+                e.printStackTrace();
+            }
 
-
-            return "redirect:/referal_link?success";
+            if (referralOfferSuccess) {
+                return "redirect:/referal_link?success";
+            } else {
+                // Handle failure, perhaps redirect to an error page
+                return "redirect:/error";
+            }
         } else {
-
             return "redirect:/referal_link?customerNotFound";
         }
     }
+
+
     public void sendEmail(String recipientEmail, String link)
             throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();

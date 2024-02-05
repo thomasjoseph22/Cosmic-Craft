@@ -38,15 +38,12 @@ public class ShoppingCartController {
             ShoppingCart cart = customer.getCart();
             if (cart==null) {
                 model.addAttribute("check","You don't have any items in your cart");
-
             }
             if (cart != null) {
                 model.addAttribute("grandTotal", cart.getTotalPrice());
             }
             model.addAttribute("shoppingCart", cart);
             model.addAttribute("title", "Cart");
-
-
             return "cart";
         }
     }

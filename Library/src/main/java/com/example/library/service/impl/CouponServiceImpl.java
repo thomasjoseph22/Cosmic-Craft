@@ -40,18 +40,32 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public double applyCoupon(String couponCode, double totalPrice) {
-        Coupon coupon= couponRepository.findCouponByCode(couponCode);
-        double discountPrice = totalPrice * (coupon.getOffPercentage() / 100.0);
-        if(discountPrice > coupon.getMaxOff()){
-            discountPrice = coupon.getMaxOff();
-        }
-        coupon.setCount(coupon.getCount()-1);
-        couponRepository.save(coupon);
-        double updatedTotalPrice = totalPrice-discountPrice;
-        String formattedTotalPrice = String.format("%.2f", updatedTotalPrice);
+        // Check if the price is above 3000 before applying the coupon
+        if (totalPrice > 3000) {
+            Coupon coupon = couponRepository.findCouponByCode(couponCode);
 
-        return Double.parseDouble(formattedTotalPrice);
+            // Calculate the discount
+            double discountPrice = totalPrice * (coupon.getOffPercentage() / 100.0);
+            if (discountPrice > coupon.getMaxOff()) {
+                discountPrice = coupon.getMaxOff();
+            }
+
+            // Update the coupon count and save
+            coupon.setCount(coupon.getCount() - 1);
+            couponRepository.save(coupon);
+
+            // Calculate the updated total price
+            double updatedTotalPrice = totalPrice - discountPrice;
+
+            // Format and return the updated total price
+            String formattedTotalPrice = String.format("%.2f", updatedTotalPrice);
+            return Double.parseDouble(formattedTotalPrice);
+        } else {
+            // If the price is not above 3000, return the original total price
+            return totalPrice;
+        }
     }
+
 
     @Override
     public boolean findByCouponCode(String couponCode) {

@@ -25,7 +25,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review save(ReviewDto reviewDto, String email, Long productId) {
+    public Review save(ReviewDto reviewDto,String email, Long productId) {
         Product product=productService.getById(productId);
         Review review=new Review();
         review.setComment(reviewDto.getComment());
@@ -38,14 +38,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> readReviewByProduct(Long productId) {
-
-        return repository.findByProduct_Id(productId);
+        return repository.readReviewByProduct(productId);
     }
-
     @Override
     public Double findRatingByProduct(Long productId) {
-
-        Object average=repository.findAverageRatingByProduct(productId);
+        Object average=repository.findRatingByProduct(productId);
         Double avgrating= (Double) average;
         return avgrating;
     }

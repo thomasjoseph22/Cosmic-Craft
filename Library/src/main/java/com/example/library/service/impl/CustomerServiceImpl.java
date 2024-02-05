@@ -151,4 +151,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getById(Long id) {
         return customerRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Customer> getCustomersByReferralCode(String referralCode) {
+        return customerRepository.findByReferalToken(referralCode);
+    }
 }

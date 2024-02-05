@@ -7,6 +7,7 @@ import com.example.library.service.*;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -40,30 +41,57 @@ public class OrderController {
     }
 
     @GetMapping("/check-out")
-    public String checkOut(Principal principal, Model model) {
+    public String checkOut(Principal principal, Model model, HttpServletRequest request) {
         if (principal == null) {
             return "redirect:/login";
         } else {
             Customer customer = customerService.findByEmail(principal.getName());
-
             ShoppingCart cart = customerService.findByEmail(principal.getName()).getCart();
-            Set<CartItem> cartItems=cart.getCartItems();
+
+            // Check if the cart is null before accessing its properties
+            if (cart == null) {
+                // Handle the case where the cart is null (maybe create a new cart)
+                // You may also want to log a warning or take other actions
+                // For now, I'll redirect to the home page as an example
+                return "redirect:/";
+            }
+
+            Set<CartItem> cartItems = cart.getCartItems();
             List<Address> addressList = customer.getAddress();
-            Wallet wallet=walletService.findByCustomer(customer);
-            List<CouponDto> couponDto=couponService.getAllCoupons();
-            model.addAttribute("wallet",wallet);
-            model.addAttribute("coupons",couponDto);
-            model.addAttribute("addressDto",new AddressDto());
+            Wallet wallet = walletService.findByCustomer(customer);
+            List<CouponDto> couponDto = couponService.getAllCoupons();
+
+            // Calculate discountedPrice based on coupon if applied
+            Double discountedPrice = cart.getTotalPrice(); // Default to total price
+
+// Check if coupon code is provided in the request parameters
+            String couponCode = request.getParameter("couponCode");
+
+// If coupon code is provided, apply the coupon and update discountedPrice
+            if (couponCode != null && couponService.findByCouponCode(couponCode.toUpperCase())) {
+                discountedPrice = couponService.applyCoupon(couponCode.toUpperCase(), discountedPrice);
+
+                // Set the coupon code attribute in the model
+                model.addAttribute("couponCode", couponCode.toUpperCase());
+            }
+
+// Add other attributes to the model
+            model.addAttribute("wallet", wallet);
+            model.addAttribute("coupons", couponDto);
+            model.addAttribute("addressDto", new AddressDto());
             model.addAttribute("customer", customer);
             model.addAttribute("addressList", addressList);
-            model.addAttribute("size",addressList.size());
+            model.addAttribute("size", addressList.size());
             model.addAttribute("cartItems", cartItems);
+            model.addAttribute("discountedPrice", discountedPrice); // Use discountedPrice here
             model.addAttribute("page", "Check-Out");
             model.addAttribute("shoppingCart", cart);
             model.addAttribute("grandTotal", cart.getTotalItems());
+
             return "checkout";
         }
     }
+
 
     @RequestMapping(value = "/check-out/apply-coupon", method = RequestMethod.POST, params = "action=apply")
     public String applyCoupon(@RequestParam("couponCode")String couponCode,Principal principal,

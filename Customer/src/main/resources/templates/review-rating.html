@@ -16,16 +16,19 @@
             <div class="card-body">
                 <h4 class="mb-30 mt-30">Adding Review and Rating</h4>
                 <div class="col-md-4">
-                    <img th:if="${not #lists.isEmpty(product.imagesUrl)}"
-                         th:src="@{'/productImages/' + ${product.imagesUrl[0]}}" width="80" height="80" class="img-xs" alt="Item"> <br>
+                    <img th:if="${not #lists.isEmpty(product.image)}"
+                         th:src="@{'/productImages/' + ${product.image[0]}}" width="80" height="80" class="img-xs" alt="Item"> <br>
                     <span th:text="${product.name}"></span>
                 </div>
                 <div class="col-md-4">
                     <div> <h5>Product Description</h5> <br>
-                        <span th:text="${product.description}"></span> <div> <br>
+                        <span th:text="${product.shortDescription}"></span> <div> <br>
                             <div> <h5>Price:</h5>
                                 <span th:text="${product.salePrice}"></span>
+
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -34,13 +37,11 @@
     </div>
 </div>
 <div class="container">
+
     <div class="col-md-8">
         <form class="form-contact comment_form" th:action="@{/addReview}" th:object="${reviewDto}" id="commentForm" method="post">
             <input type="hidden" th:value="${product.id}" name="productId">
-
             <input type="text" class="form-control" th:field="*{comment}" placeholder="write review" name="comment" aria-label="Recipient's username" aria-describedby="basic-addon2" required>
-
-
             <input id="ratinginput" th:field="*{rating}" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" >
             <input type="submit" name="Submit"/>
             <a class="btn btn-primary" th:href="@{/order?pageNo=0}"> Order Details</a>
@@ -51,9 +52,10 @@
     <div class="single-comment justify-content-between d-flex" th:each="review:${review}">
         <div class="user justify-content-between d-flex" >
             <div class="thumb text-center col-md-4">
-                <h6><a href="#" th:text="${review.customer.name}"></a></h6>
+                <h6><a href="#" th:text="${review.customer.firstName}"></a></h6>
             </div>
             <div class="desc col-md-8">
+
                 <p th:text="${review.comment}">.</p>
                 <div class="d-flex justify-content-between">
                     <div class="d-flex align-items-center">
@@ -68,8 +70,11 @@
         </div>
     </div>
 </div>
+
 <script>
     $("#ratinginput").rating();
 </script>
+
 </body>
+</html>
 </html>

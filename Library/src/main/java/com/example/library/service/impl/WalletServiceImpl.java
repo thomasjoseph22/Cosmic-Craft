@@ -11,9 +11,13 @@ import com.example.library.repository.CustomerRepository;
 import com.example.library.repository.WalletHistoryRepository;
 import com.example.library.repository.WalletRepository;
 import com.example.library.service.WalletService;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +28,8 @@ public class WalletServiceImpl implements WalletService {
     private final WalletRepository walletRepository;
     private final CustomerRepository customerRepository;
     private final WalletHistoryRepository walletHistoryRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(WalletServiceImpl.class);
 
     @Autowired
     public WalletServiceImpl(WalletRepository walletRepository,
@@ -115,37 +121,62 @@ public class WalletServiceImpl implements WalletService {
         walletHistoryRepository.save(walletHistory);
     }
     @Override
-    public void addWalletToReferalEarn(long id) {
+    @Transactional
+    public void addWalletToReferalEarn(Long customerId) {
         try {
-            Customer customer = customerRepository.getReferenceById(id);
+            Customer customer = customerRepository.getReferenceById(customerId);
+            logger.info("Referrer ID: {}, Email: {}", customer.getId(), customer.getEmail());
+
             List<Customer> optionalReferrer = customerRepository.findByReferalToken(customer.getReferalToken());
+
             if (!optionalReferrer.isEmpty()) {
-                Customer referrer = optionalReferrer.get(0);
+                Customer referrer = customer;
+                logger.info("Referrer found: {}, Email: {}", referrer.getId(), referrer.getEmail());
+
                 Wallet wallet = findByCustomer(referrer);
+
                 if (wallet != null) {
-                    wallet.setBalance(wallet.getBalance() + 100);
-                    System.out.println("Wallet balance increased successfully");
+                    WalletHistory walletHistory = new WalletHistory();
+                    walletHistory.setWallet(wallet);
+                    walletHistory.setType(WalletTransactionType.CREDITED);
+                    walletHistory.setTransactionStatus("Success");
+                    walletHistory.setAmount(100);
+                    walletHistory.setTransationDate(java.sql.Date.valueOf(LocalDate.now()));
+                    walletHistoryRepository.save(walletHistory);
+
+                    double newBalance = wallet.getBalance() + walletHistory.getAmount();
+                    wallet.setBalance(newBalance);
+                    walletRepository.save(wallet);
+
+                    logger.info("Referral offer added successfully. Current wallet balance: {}", wallet.getBalance());
                 } else {
+                    // Wallet not found, create a new one
                     wallet = new Wallet();
                     wallet.setCustomer(referrer);
                     wallet.setBalance(100);
+                    walletRepository.save(wallet);
+
+                    // Create WalletHistory entry for the new wallet
+                    WalletHistory walletHistory = new WalletHistory();
+                    walletHistory.setWallet(wallet);
+                    walletHistory.setType(WalletTransactionType.CREDITED);
+                    walletHistory.setTransactionStatus("Success");
+                    walletHistory.setAmount(100);
+                    walletHistory.setTransationDate(java.sql.Date.valueOf(LocalDate.now()));
+                    walletHistoryRepository.save(walletHistory);
+
+                    logger.info("Referral offer added successfully for a new wallet. Current wallet balance: {}", wallet.getBalance());
                 }
-                walletRepository.save(wallet);
-                WalletHistory walletHistory = new WalletHistory();
-                walletHistory.setWallet(wallet);
-                walletHistory.setAmount(100);
-                walletHistory.setTransactionStatus("Credit");
-                walletHistory.setTrasactionType("Referral Earning");
-                walletHistory.setTransationDate(new Date());
-                walletHistoryRepository.save(walletHistory);
-                System.out.println("Wallet history saved successfully");
             } else {
-                System.out.println("Referrer not found");
+                logger.warn("Referrer not found");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("An error occurred in addWalletToReferalEarn method", e);
         }
     }
+
+
+
 
     public List<WalletHistoryDto> transferData(List<WalletHistory> walletHistoryList){
         List<WalletHistoryDto>walletHistoryDtoList=new ArrayList<>();
